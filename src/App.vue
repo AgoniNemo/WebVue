@@ -2,6 +2,10 @@
   <div id="app">
     <div class="home-wrapper">
       <animationview></animationview>
+      <div class="login-view">
+        <input type="text" name="user">
+        <input type="password" name="password">
+      </div>
     </div>
     <router-view></router-view>
   </div>

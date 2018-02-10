@@ -17,7 +17,6 @@
     },
     methods: {
       showInterface() {
-        console.log('sss');
         this.show = true;
       }
     }
