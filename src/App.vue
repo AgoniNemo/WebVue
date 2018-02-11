@@ -22,5 +22,11 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
+  .app
+    .home-wrapper
+      position: absolute
+      .login-view
+        background: #fff
+        
 
 </style>
