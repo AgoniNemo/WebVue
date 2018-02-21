@@ -24,9 +24,11 @@
 <style lang="stylus" rel="stylesheet/stylus">
   .app
     .home-wrapper
-      position: absolute
+      display: flex
       .login-view
+        position: fixed
         background: #fff
-        
-
+        top: 100px
+        left: 100px
+        width: 100px
 </style>
