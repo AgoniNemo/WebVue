@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <div class="home-wrapper">
-      <animationview></animationview>
       <div class="login-view">
         <input type="text" name="user">
         <input type="password" name="password">
@@ -22,13 +21,13 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  .app
     .home-wrapper
       display: flex
       .login-view
-        position: fixed
-        background: #fff
-        top: 100px
-        left: 100px
-        width: 100px
+        background: red
+        top: 50%
+        height: 260px
+        width: 375px
+        .text
+          display: inline-block
 </style>
