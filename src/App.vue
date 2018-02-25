@@ -2,8 +2,12 @@
   <div id="app">
     <div class="home-wrapper">
       <div class="login-view">
-        <input type="text" name="user" placeholder="用户名">
-        <input type="password" name="password" placeholder="密码">
+        <div class="text">
+          <input type="text" placeholder="用户名">
+        </div>
+        <div class="password">
+          <input type="password" placeholder="密码">
+        </div>
       </div>
     </div>
     <router-view></router-view>
@@ -24,13 +28,21 @@
     .home-wrapper
       display: flex
       .login-view
-        display: box
-        box-orient: horizontal
-        background: red
+        position: absolute
+        top: 50%
+        left: 50%
         height: 260px
         width: 375px
+        margin-top: -130px
+        margin-left: -187px
+        background: #eee
         .text
           display: inline-block
+          margin-top: 10px
+          height: 36px
+          width: 320px
         .password
           display: inline-block
+          height: 36px
+          width: 320px
 </style>
