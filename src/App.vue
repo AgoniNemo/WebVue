@@ -1,13 +1,17 @@
 <template>
   <div id="app">
+    <animationview></animationview>
     <div class="home-wrapper">
       <div class="login-view">
-        <div class="text">
-          <input type="text" placeholder="用户名">
+        <div class="user">
+          <textField></textField>
         </div>
         <div class="password">
-          <input type="password" placeholder="密码">
+          <textField :isPassword=true></textField>
         </div>
+      </div>
+      <div class="button">
+        <button type="button">登录</button>
       </div>
     </div>
     <router-view></router-view>
@@ -16,10 +20,12 @@
 
 <script type="text/ecmascript-6">
   import animationview from 'components/animationview/animationview';
+  import textField from 'components/textField/textField';
 
   export default {
     components: {
-      animationview
+      animationview,
+      textField
     }
   };
 </script>
@@ -35,14 +41,14 @@
         width: 375px
         margin-top: -130px
         margin-left: -187px
-        background: #eee
-        .text
-          display: inline-block
+        background: #fff
+        border-radius: 5px
+        .user
           margin-top: 10px
-          height: 36px
-          width: 320px
         .password
-          display: inline-block
-          height: 36px
-          width: 320px
+          margin-top: 56px
+        .button
+          color: #fff
+          background: #20a0ff
+          border-color: #20a0ff
 </style>
