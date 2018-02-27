@@ -11,7 +11,7 @@
 <style lang="stylus" rel="stylesheet/stylus">
 
   .home
-    display: flex
+    height: 100px
     background: red
 
 </style>

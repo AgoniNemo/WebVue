@@ -1,6 +1,6 @@
 <template>
     <div class="text-field">
-        <input class="text" :type=type :placeholder=placeholder>
+        <input @change="updateData" v-model="newText" class="text" :type=type :placeholder=placeholder autocomplete="new-password">
     </div>
 </template>
 
@@ -10,6 +10,17 @@
             isPassword: {
                 type: Boolean,
                 default: false
+            }
+        },
+        data() {
+            return {
+                newText: ''
+            };
+        },
+        methods: {
+            updateData() {
+                let dataName = this.isPassword ? 'password' : 'user';
+                this.$emit(`update:${dataName}`, this.newText);
             }
         },
         computed: {
@@ -38,6 +49,7 @@
       border: 1px solid #bfcbd9
       .text
         position: absolute
+        background-image: none
         font-size: 12px
         height: 26px
         width: 310px
@@ -47,4 +59,5 @@
         border: 0
         outline: none
         background: #eee
+        background-color: #fff
 </style>

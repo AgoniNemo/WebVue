@@ -9,5 +9,7 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-
+  .login-view
+    height: 100px
+    background : red
 </style>

@@ -27,7 +27,7 @@
   .animation-view
     display: flex
     .first
-      z-index: 0
+      z-index: -1
       .first-img
         position: fixed
         width: 100%

@@ -10,7 +10,7 @@ export default new Router({
   linkActiveClass: 'active',
   routes: [
     {
-      path: '/',
+      path: '/home',
       name: 'home',
       component: Home
     }
