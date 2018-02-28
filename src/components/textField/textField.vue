@@ -52,7 +52,7 @@
         background-image: none
         font-size: 12px
         height: 26px
-        width: 310px
+        width: 305px
         line-height: 26px
         left: 10px
         top: 5px

@@ -32,7 +32,7 @@
         position: fixed
         width: 100%
         height: 100%
-        animation: firstslidein 6s infinite
+        animation: firstslidein 6s
         animation-direction: alternate
         @keyframes firstslidein
           0% {

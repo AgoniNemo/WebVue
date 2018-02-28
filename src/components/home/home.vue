@@ -11,7 +11,7 @@
 <style lang="stylus" rel="stylesheet/stylus">
 
   .home
-    height: 100px
-    background: red
+    height: 100%
+    background: #fff
 
 </style>
