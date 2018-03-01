@@ -38,26 +38,26 @@
 
 <style lang="stylus" rel="stylesheet/stylus">
     .text-field
-      display: inline-block
-      position: absolute
-      left: 27px
-      height: 36px
-      width: 320px
-      font-size: 0px
-      background: #fff
-      border-radius: 4px
-      border: 1px solid #bfcbd9
+      display: inline-block;
+      position: absolute;
+      left: 27px;
+      height: 36px;
+      width: 320px;
+      font-size: 0px;
+      background: #fff;
+      border-radius: 4px;
+      border: 1px solid #bfcbd9;
       .text
-        position: absolute
-        background-image: none
-        font-size: 12px
-        height: 26px
-        width: 305px
-        line-height: 26px
-        left: 10px
-        top: 5px
-        border: 0
-        outline: none
-        background: #eee
-        background-color: #fff
+        position: absolute;
+        background-image: none;
+        font-size: 12px;
+        height: 26px;
+        width: 305px;
+        line-height: 26px;
+        left: 10px;
+        top: 5px;
+        border: 0;
+        outline: none;
+        background: #eee;
+        background-color: #fff;
 </style>

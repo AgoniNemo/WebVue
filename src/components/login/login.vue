@@ -8,7 +8,7 @@
             <textField :password.sync=password :isPassword=true></textField>
         </div>
         <div class="button-wrapper" @click="loginClick">
-            <a class="button is-primary">登录</a>
+            <a :class=btnClass>登录</a>
         </div>
      </div>
   </div>
@@ -16,8 +16,9 @@
 
 <script type="text/ecmascript-6">
   import textField from 'components/textField/textField';
+  import {saveToLocal} from '@/common/js/store.js';
 
-  // const ERR_OK = 0;
+  const ERR_OK = 0;
 
   export default {
     data() {
@@ -26,32 +27,50 @@
             type: Object
         },
         user: '',
-        password: ''
+        password: '',
+        btnClass: 'button is-primary'
       };
+    },
+    computed: {
+      isEmpty() {
+        if (this.password.length === 0 || this.user.length === 0) {
+          return false;
+        }
+        return true;
+      }
     },
     methods: {
       loginClick() {
-        console.log(this.user + ':' + this.password);
-        this.loadingAlert('登录中...');
-        // this.$http.post('/user/login', {
-        //   user: 'Test',
-        //   password: '123456'
-        // }).then((response) => {
-        //   let resp = response.data;
-        //   console.log(response);
-        //   if (resp.code === ERR_OK) {
-        //     this.userModel = resp.data;
-        //     this.$nextTick(() => {
-        //       /* 请求回来是异步的 所以只有在nextTick方法才能更新UI */
-        //       this.$router.push({path: '/home'});
-        //     });
-        //   } else {
-        //     this.warnAlert('开始跳转!');
-        //   }
-        // })
-        // .catch(function (error) {
-        //   console.log('error: ' + error);
-        // });
+        this.isLoading();
+        if (this.isEmpty === false) {
+          this.warnAlert('用户名或密码不能为空!');
+          this.isLoading();
+          return;
+        }
+        this.$http.post('/user/login', {
+          user: this.user,
+          password: this.password
+        }).then((response) => {
+          let resp = response.data;
+          if (resp.code === ERR_OK.toString(10)) {
+            this.userModel = resp.data;
+            saveToLocal(this.userModel.user, 'logining', this.userModel);
+            this.$nextTick(() => {
+              /* 请求回来是异步的 所以只有在nextTick方法才能更新UI */
+              this.$router.push({path: 'home', params: { userId: 123 }});
+            });
+          } else {
+            this.warnAlert(resp.message);
+          }
+          this.isLoading();
+        })
+        .catch(function (error) {
+          console.log('error: ' + error);
+        });
+      },
+      isLoading() {
+        let r = this.btnClass === 'button is-primary';
+        this.btnClass = r ? 'button is-primary is-loading' : 'button is-primary';
       },
       showAlert(text) {
         this.$modal.open({
@@ -75,47 +94,48 @@
 
 <style lang="stylus" rel="stylesheet/stylus">
   .login-view
-    position: absolute
-    left: 0
-    top: 0
-    right: 0
-    bottom: 0
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
     .content
-      position: absolute
-      top: 50%
-      left: 50%
-      height: 200px
-      width: 375px
-      margin-top: -130px
-      margin-left: -187px
-      background: #fff
-      border-radius: 5px
-      animation: contentslidein 1.5s
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      height: 200px;
+      width: 375px;
+      margin-top: -130px;
+      margin-left: -187px;
+      background: #fff;
+      border-radius: 5px;
+      animation: contentslidein 1.5s;
       @keyframes contentslidein
         0% {
-          opacity: 0.4
-          top: 30%
+          opacity: 0.4;
+          top: 30%;
         }
         100% {
-          opacity: 1
+          opacity: 1;
         }
       .user
-        margin-top: 20px
-        height: 60px
+        margin-top: 20px;
+        height: 60px;
       .password
-        height: 56px
+        height: 56px;
       .button-wrapper
-        height: 38px
-        width: 320px
-        margin-left: 27px
-        border-radius: 5px
+        height: 38px;
+        width: 320px;
+        margin-left: 27px;
+        border-radius: 5px;
         .button
-          width: 100%
-          outline: none
-          background-color: #20a0ff
-          border-color: #20a0ff
-          font-size: 15px
-          cursor: pointer /** 当鼠标放在上面时变成手的样子 */
+          width: 100%;
+          outline: none;
+          background-color: #20a0ff;
+          border-color: #20a0ff;
+          font-size: 15px;
+          cursor: pointer; /** 当鼠标放在上面时变成手的样子 */
         .button:hover
-          opacity: 0.8
+          opacity: 0.8;
+
 </style>

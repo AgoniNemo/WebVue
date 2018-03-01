@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <animationview></animationview>
-    <router-view></router-view>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
   </div>
 </template>
 
@@ -17,7 +19,7 @@
 
 <style lang="stylus" rel="stylesheet/stylus">
   #app
-    position: absolute
-    width: 100%
-    height: 100%
+    position: absolute;
+    width: 100%;
+    height: 100%;
 </style>
