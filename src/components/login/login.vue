@@ -57,7 +57,7 @@
             saveToLocal(this.userModel.user, 'logining', this.userModel);
             this.$nextTick(() => {
               /* 请求回来是异步的 所以只有在nextTick方法才能更新UI */
-              this.$router.push({path: 'home', params: { userId: 123 }});
+              this.$router.replace({path: 'home', query: { user: this.userModel.user }});
             });
           } else {
             this.warnAlert(resp.message);

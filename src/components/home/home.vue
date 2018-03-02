@@ -8,15 +8,13 @@
 import {loadFromLocal} from '@/common/js/store.js';
 
   export default {
-    props: {
-      userModel: {
-          type: Object
-      }
+    data() {
+      return {
+        modelModel: loadFromLocal(this.$route.query.user, 'logining', false)
+      };
     },
     created() {
-      console.log(this.$route.params);
-      let model = loadFromLocal('Test', 'logining', false);
-      console.log(model);
+      console.log(this.modelModel);
     }
   };
 </script>
