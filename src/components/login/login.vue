@@ -120,9 +120,9 @@
         }
       .user
         margin-top: 20px;
-        height: 60px;
+        height: 66px;
       .password
-        height: 56px;
+        height: 65px;
       .button-wrapper
         height: 38px;
         width: 320px;
