@@ -1,16 +1,18 @@
 <template>
   <div class="login-view">
-    <div class="content">
-        <div class="user">
-            <textField :user.sync=user></textField>
+    <form>
+        <div class="content">
+            <div class="user">
+                <textField :user.sync=user></textField>
+            </div>
+            <div class="password">
+                <textField :password.sync=password :isPassword=true></textField>
+            </div>
+            <div class="button-wrapper" @click="loginClick">
+                <a :class=btnClass>登录</a>
+            </div>
         </div>
-        <div class="password">
-            <textField :password.sync=password :isPassword=true></textField>
-        </div>
-        <div class="button-wrapper" @click="loginClick">
-            <a :class=btnClass>登录</a>
-        </div>
-     </div>
+     </form>
   </div>
 </template>
 

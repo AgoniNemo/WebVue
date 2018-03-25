@@ -1,7 +1,7 @@
 <template>
     <transition>
         <div class="text-field">
-            <input @blur="blur()" @change="updateData" v-model="newText" class="input-text" :type=type :placeholder=placeholder autocomplete="new-password">
+            <input @blur="blur()" @onchange="inputEvents()" @change="updateData" v-model="newText" class="input-text" :type=type :placeholder=placeholder autocomplete="new-password" required>
             <span v-show="showText" class="text">{{promptString}}</span>
         </div>
     </transition>
@@ -25,6 +25,10 @@
             updateData() {
                 let dataName = this.isPassword ? 'password' : 'user';
                 this.$emit(`update:${dataName}`, this.newText);
+                console.log(dataName);
+            },
+            inputEvents() {
+                console.log('ssss');
             },
             focus() {
                 console.log(this.isPassword);
@@ -55,6 +59,7 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
+
     .text-field
       display: inline-block;
       position: absolute;
