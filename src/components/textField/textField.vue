@@ -1,7 +1,7 @@
 <template>
     <transition>
         <div class="text-field">
-            <input @blur="blur()" @onchange="inputEvents()" @change="updateData" v-model="newText" class="input-text" :type=type :placeholder=placeholder autocomplete="new-password" required>
+            <input @keyup.enter="loginClick" @blur="blur()" @onchange="inputEvents()" @change="updateData" v-model="newText" class="input-text" :type=type :placeholder=placeholder autocomplete="new-password" required>
             <span v-show="showText" class="text">{{promptString}}</span>
         </div>
     </transition>
@@ -39,6 +39,10 @@
                 } else {
                     this.showText = false;
                 }
+            },
+            loginClick() {
+                console.log('loginClick');
+                this.$emit('loginClick', 'loginClick');
             }
         },
         computed: {

@@ -5,6 +5,12 @@ import Login from '@/components/login/login';
 import Vuex from 'vuex';
 import VueBlu from 'vue-blu';
 import 'vue-blu/dist/css/vue-blu.min.css';
+import { Card, Carousel, Button } from 'element-ui';
+
+// element-ui
+Vue.use(Card);
+Vue.use(Carousel);
+Vue.use(Button);
 
 Vue.use(VueBlu);
 Vue.use(Vuex);
