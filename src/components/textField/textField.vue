@@ -1,7 +1,7 @@
 <template>
     <transition>
         <div class="text-field">
-            <input @keyup.enter="loginClick" @blur="blur()" @onchange="inputEvents()" @change="updateData" v-model="newText" class="input-text" :type=type :placeholder=placeholder autocomplete="new-password" required>
+            <input @keyup.enter="loginClick" @blur="blur()" @input="inputEvents()" @change="updateData" v-model.trim="newText" class="input-text" :type=type :placeholder=placeholder autocomplete="new-password" required :disabled=isDisabled>
             <span v-show="showText" class="text">{{promptString}}</span>
         </div>
     </transition>
@@ -11,6 +11,10 @@
     export default {
         props: {
             isPassword: {
+                type: Boolean,
+                default: false
+            },
+            isDisabled: {
                 type: Boolean,
                 default: false
             }
@@ -28,7 +32,8 @@
                 console.log(dataName);
             },
             inputEvents() {
-                console.log('ssss');
+                let result = (this.newText.length === 0);
+                this.showText = result;
             },
             focus() {
                 console.log(this.isPassword);

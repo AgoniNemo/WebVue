@@ -3,10 +3,10 @@
     <form>
         <div class="content">
             <div class="user">
-                <textField :user.sync=user @loginClick="loginClick"></textField>
+                <textField :user.sync=user @loginClick="loginClick" :isDisabled=isDisabled></textField>
             </div>
             <div class="password">
-                <textField :password.sync=password :isPassword=true @loginClick="loginClick"></textField>
+                <textField :password.sync=password :isPassword=true @loginClick="loginClick()" :isDisabled=isDisabled></textField>
             </div>
             <div class="button-wrapper" @click="loginClick">
                 <a :class=btnClass>登录</a>
@@ -30,7 +30,8 @@
         },
         user: '',
         password: '',
-        btnClass: 'button is-primary'
+        btnClass: 'button is-primary',
+        isDisabled: false
       };
     },
     computed: {
@@ -44,6 +45,7 @@
     methods: {
       loginClick() {
         this.isLoading();
+        this.isDisabled = true;
         if (this.isEmpty === false) {
           this.warnAlert('用户名或密码不能为空!');
           this.isLoading();
@@ -64,6 +66,7 @@
           } else {
             this.warnAlert(resp.message);
           }
+          this.isDisabled = false;
           this.isLoading();
         })
         .catch(function (error) {
