@@ -1,5 +1,6 @@
 <template>
   <div class="login-view">
+  <animationview></animationview>
     <form>
         <div class="content">
             <div class="user">
@@ -19,6 +20,7 @@
 <script type="text/ecmascript-6">
   import textField from 'components/textField/textField';
   import {saveToLocal} from '@/common/js/store.js';
+  import animationview from 'components/animationview/animationview';
 
   const ERR_OK = 0;
 
@@ -92,7 +94,8 @@
       }
     },
     components: {
-      textField
+      textField,
+      animationview
     }
   };
 </script>

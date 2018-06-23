@@ -4,6 +4,7 @@ import Home from '@/components/home/home';
 import Login from '@/components/login/login';
 import Vuex from 'vuex';
 import VueBlu from 'vue-blu';
+import 'vue-blu/dist/css/vue-blu.min.css';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
