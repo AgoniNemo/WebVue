@@ -21,6 +21,7 @@
   import textField from 'components/textField/textField';
   import {saveToLocal} from '@/common/js/store.js';
   import animationview from 'components/animationview/animationview';
+  import { mapMutations } from 'vuex';
 
   const ERR_OK = 0;
 
@@ -45,6 +46,7 @@
       }
     },
     methods: {
+      ...mapMutations({setUser: this.userModel}),
       loginClick() {
         this.isLoading();
         this.isDisabled = true;

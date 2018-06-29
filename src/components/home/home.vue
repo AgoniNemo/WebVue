@@ -58,16 +58,18 @@
   export default {
     data() {
       return {
-        modelModel: loadFromLocal(this.$route.query.user, 'logining', false),
+        userModel: loadFromLocal(this.$route.query.user, 'logining', false),
         headerVideos: [],
         videos: []
       };
     },
     created() {
+      console.log(this.requestObj);
+      console.log(this.userModel.user);
       // 请求头部影片
       this.$http.post('/video/latestVideo', {
-          user: this.modelModel.user,
-          token: this.modelModel.token,
+          user: this.userModel.user,
+          token: this.userModel.token,
           count: 10,
           page: 0
         }).then((response) => {
@@ -87,16 +89,25 @@
     },
     computed: {
         imageUrl() {
-            let headPath = this.modelModel.headPath ? this.modelModel.headPath : url;
+            let headPath = this.userModel.headPath ? this.userModel.headPath : url;
             return headPath;
+        },
+        requestObj() {
+            var obj = {
+                user: this.userModel.user,
+                token: this.userModel.token,
+                count: 10,
+                page: 0
+              };
+            return obj;
         }
     },
     methods: {
       requestData() {
           // 请求内容影片
           this.$http.post('/video/latestVideo', {
-            user: this.modelModel.user,
-            token: this.modelModel.token,
+            user: this.userModel.user,
+            token: this.userModel.token,
             count: 30,
             page: 1
           }).then((response) => {
@@ -201,6 +212,7 @@
             line-height: 12px
             .views
               font-size: 15px
+              float: right
           .image
             width: 100%
             display: block
