@@ -1,1 +1,1 @@
-export const userModel = state => state.userModel
+export const userModel = state => state.userModel;

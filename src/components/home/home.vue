@@ -21,29 +21,32 @@
         <el-carousel :interval="4000" type="card" height="400px">
             <el-carousel-item v-for="video in headerVideos" :key="video.id">
               <a @click.stop="imaegClick(video)">
-                <img :src=imageUrl trigger="click">
+                <img :src=video.icon trigger="click">
               </a>
             </el-carousel-item>
         </el-carousel>
       </div>
       <div class="content">
-        <el-row :gutter="20">
+        <el-row :gutter="20" v-loading="loading"
+            element-loading-text="努力加载中">
           <el-col :span="4" v-for="video in videos" :key="video.id">
-            <el-card :body-style="{ padding: '5px' }" shadow="hover">
-              <img :src=imageUrl class="image">
-              <div style="padding: 10px 0px;">
-                <span style="display: block; height: 30px">好吃的汉堡</span>
-                <div class="bottom">
-                  <span class="time">时间:{{ video.duration }}</span>
-                  <span class="views">观看{{ video.views }}次</span>
+            <a @click.stop="imaegClick(video)">
+              <el-card :body-style="{ padding: '5px' }" shadow="hover">
+                <img :src=video.icon class="image">
+                <div style="padding: 10px 0px;">
+                  <span style="display: block; height: 40px; overflow: hidden; white-space:pre-wrap;">{{video.title}}</span>
+                  <div class="bottom">
+                    <span class="time">时间:{{ video.duration }}</span>
+                    <span class="views">观看{{ video.views }}次</span>
+                  </div>
                 </div>
-              </div>
-            </el-card>
+              </el-card>
+             </a>
           </el-col>
         </el-row>
       </div>
       <div class="foot">
-        <pagination :total="333" ></pagination>
+        <pagination :total="999" :change=pageClick layout="total, pager, jumper" :page-size="30"></pagination>
       </div>
     </div>
   </div>
@@ -52,79 +55,70 @@
 <script type="text/ecmascript-6">
   import {loadFromLocal} from '@/common/js/store.js';
   import url from '../../assets/image/header.jpg';
-
+  import { requestLatestVideo } from '@/api';
   const ERR_OK = 0;
-
   export default {
     data() {
       return {
         userModel: loadFromLocal(this.$route.query.user, 'logining', false),
         headerVideos: [],
-        videos: []
+        videos: [],
+        loading: false,
+        test: false,
+        page: 0
       };
     },
     created() {
       console.log(this.requestObj);
-      console.log(this.userModel.user);
-      // 请求头部影片
-      this.$http.post('/video/latestVideo', {
+      const params = {
           user: this.userModel.user,
           token: this.userModel.token,
           count: 10,
-          page: 0
-        }).then((response) => {
-          let resp = response.data;
-          console.log(resp);
-          if (resp.code === ERR_OK.toString(10)) {
-            this.headerVideos = resp.data;
+          page: this.page
+      };
+      requestLatestVideo(params).then((res) => {
+          console.log(res);
+          if (res.code === ERR_OK.toString(10)) {
+            this.headerVideos = res.data;
           } else {
-            this.warnAlert(resp.message);
+            this.warnAlert(res.message);
           }
-        })
-        .catch(function (error) {
-          console.log('error: ' + error);
-        });
-
-        this.requestData();
+      });
+      this.page = this.page + 1;
+      this.requestData();
     },
     computed: {
         imageUrl() {
             let headPath = this.userModel.headPath ? this.userModel.headPath : url;
             return headPath;
-        },
-        requestObj() {
-            var obj = {
-                user: this.userModel.user,
-                token: this.userModel.token,
-                count: 10,
-                page: 0
-              };
-            return obj;
         }
     },
     methods: {
       requestData() {
-          // 请求内容影片
-          this.$http.post('/video/latestVideo', {
+        const params = {
             user: this.userModel.user,
             token: this.userModel.token,
             count: 30,
-            page: 1
-          }).then((response) => {
-            let resp = response.data;
-            console.log(resp);
-            if (resp.code === ERR_OK.toString(10)) {
-              this.videos = resp.data;
+            page: this.page
+        };
+        this.loading = true;
+        requestLatestVideo(params).then((res) => {
+            console.log(res);
+            if (res.code === ERR_OK.toString(10)) {
+              this.videos = res.data;
             } else {
-              this.warnAlert(resp.message);
+              this.warnAlert(res.message);
             }
-          })
-          .catch(function (error) {
-            console.log('error: ' + error);
-          });
+            this.loading = false;
+        });
+      },
+      pageClick(page) {
+          this.page = page;
+          this.requestData();
+          console.log(this.page);
       },
       imaegClick(video) {
-        console.log(video);
+        console.log(video.playPath);
       },
       informationManger() {
         console.log('资料管理');

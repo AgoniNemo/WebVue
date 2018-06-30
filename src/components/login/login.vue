@@ -19,18 +19,14 @@
 
 <script type="text/ecmascript-6">
   import textField from 'components/textField/textField';
-  import {saveToLocal} from '@/common/js/store.js';
   import animationview from 'components/animationview/animationview';
-  import { mapMutations } from 'vuex';
+  import { mapActions } from 'vuex';
 
   const ERR_OK = 0;
 
   export default {
     data() {
       return {
-        userModel: {
-            type: Object
-        },
         user: '',
         password: '',
         btnClass: 'button is-primary',
@@ -46,7 +42,9 @@
       }
     },
     methods: {
-      ...mapMutations({setUser: this.userModel}),
+      ...mapActions([
+        'LoginAction'
+      ]),
       loginClick() {
         this.isLoading();
         this.isDisabled = true;
@@ -55,27 +53,19 @@
           this.isLoading();
           return;
         }
-        this.$http.post('/user/login', {
-          user: this.user,
-          password: this.password
-        }).then((response) => {
-          let resp = response.data;
-          if (resp.code === ERR_OK.toString(10)) {
-            this.userModel = resp.data;
-            saveToLocal(this.userModel.user, 'logining', this.userModel);
-            this.$nextTick(() => {
-              /* 请求回来是异步的 所以只有在nextTick方法才能更新UI */
-              this.$router.replace({path: 'home', query: { user: this.userModel.user }});
-            });
-          } else {
-            this.warnAlert(resp.message);
-          }
-          this.isDisabled = false;
-          this.isLoading();
-        })
-        .catch(function (error) {
-          console.log('error: ' + error);
-        });
+        const loginParams = { user: this.user, password: this.password };
+        this.LoginAction(loginParams).then((res) => {
+            if (res.code === ERR_OK.toString(10)) {
+              this.$nextTick(() => {
+                /* 请求回来是异步的 所以只有在nextTick方法才能更新UI */
+                this.$router.replace({path: 'home', query: { user: res.data.user }});
+              });
+            } else {
+              this.warnAlert(res.message);
+            }
+            this.isDisabled = false;
+            this.isLoading();
+          });
       },
       isLoading() {
         let r = this.btnClass === 'button is-primary';
