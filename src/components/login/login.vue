@@ -43,7 +43,7 @@
     },
     methods: {
       ...mapActions([
-        'LoginAction'
+        'loginAction'
       ]),
       loginClick() {
         this.isLoading();
@@ -54,7 +54,7 @@
           return;
         }
         const loginParams = { user: this.user, password: this.password };
-        this.LoginAction(loginParams).then((res) => {
+        this.loginAction(loginParams).then((res) => {
             if (res.code === ERR_OK.toString(10)) {
               this.$nextTick(() => {
                 /* 请求回来是异步的 所以只有在nextTick方法才能更新UI */

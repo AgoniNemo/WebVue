@@ -46,64 +46,66 @@
         </el-row>
       </div>
       <div class="foot">
-        <pagination :total="999" :change=pageClick layout="total, pager, jumper" :page-size="30"></pagination>
+        <pagination :total="969" :change=pageClick layout="total, pager, jumper" :page-size="30"></pagination>
       </div>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import {loadFromLocal} from '@/common/js/store.js';
   import url from '../../assets/image/header.jpg';
-  import { requestLatestVideo } from '@/api';
+  import { mapActions, mapGetters } from 'vuex';
+
   const ERR_OK = 0;
   export default {
     data() {
       return {
-        userModel: loadFromLocal(this.$route.query.user, 'logining', false),
         headerVideos: [],
         videos: [],
         loading: false,
         test: false,
-        page: 0
+        isShow: true,
+        params: {
+          count: 10,
+          page: 0
+        }
       };
     },
     created() {
-      console.log(this.requestObj);
-      const params = {
-          user: this.userModel.user,
-          token: this.userModel.token,
-          count: 10,
-          page: this.page
+      const condition = {
+          ...this.params
       };
-      requestLatestVideo(params).then((res) => {
-          console.log(res);
+      console.log(this.userModel);
+      this.enquiriesAction(condition).then((res) => {
           if (res.code === ERR_OK.toString(10)) {
             this.headerVideos = res.data;
           } else {
             this.warnAlert(res.message);
           }
       });
-      this.page = this.page + 1;
+      this.params.page = this.params.page + 1;
+      this.params.count = 30;
       this.requestData();
     },
     computed: {
+        ...mapGetters([
+            'userModel'
+        ]),
         imageUrl() {
             let headPath = this.userModel.headPath ? this.userModel.headPath : url;
             return headPath;
         }
     },
     methods: {
+      ...mapActions([
+        'enquiriesAction'
+      ]),
       requestData() {
-        const params = {
-            user: this.userModel.user,
-            token: this.userModel.token,
-            count: 30,
-            page: this.page
+        const condition = {
+          ...this.params
         };
         this.loading = true;
-        requestLatestVideo(params).then((res) => {
-            console.log(res);
+        this.enquiriesAction(condition).then((res) => {
             if (res.code === ERR_OK.toString(10)) {
               this.videos = res.data;
             } else {
@@ -113,9 +115,9 @@
         });
       },
       pageClick(page) {
-          this.page = page;
+          this.params.page = page;
           this.requestData();
-          console.log(this.page);
+          console.log(this.params.page);
       },
       imaegClick(video) {
         console.log(video.playPath);
@@ -131,6 +133,8 @@
       },
       logout() {
         console.log('退出登录');
+        this.isShow = false;
+        this.$router.push({ path: '/' });
       },
       showAlert(text) {
         this.$modal.open({

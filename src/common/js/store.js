@@ -1,27 +1,31 @@
+const TAG_NAME = 'TAG_NAME';
+
 export function saveToLocal(id, key, value) {
-  let seller = window.localStorage.__seller__;
-  if (!seller) {
-    seller = {};
-    seller[id] = {};
+  let obj = window.localStorage.__obj__;
+  let ID = (id === null) ? TAG_NAME : id;
+  if (!obj) {
+    obj = {};
+    obj[ID] = {};
   } else {
-    seller = JSON.parse(seller);
-    if (!seller[id]) {
-      seller[id] = {};
+    obj = JSON.parse(obj);
+    if (!obj[ID]) {
+      obj[ID] = {};
     }
   }
-  seller[id][key] = value;
-  window.localStorage.__seller__ = JSON.stringify(seller);
+  obj[ID][key] = value;
+  window.localStorage.__obj__ = JSON.stringify(obj);
 };
 
 export function loadFromLocal(id, key, def) {
-  let seller = window.localStorage.__seller__;
-  if (!seller) {
+  let obj = window.localStorage.__obj__;
+  let ID = (id === null) ? TAG_NAME : id;
+  if (!obj) {
     return def;
   }
-  seller = JSON.parse(seller)[id];
-  if (!seller) {
+  obj = JSON.parse(obj)[ID];
+  if (!obj) {
     return def;
   }
-  let ret = seller[key];
+  let ret = obj[key];
   return ret || def;
 };
