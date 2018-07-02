@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="nav">
-      <dropdown trigger="hover">
+      <dropdown trigger="hover" ref="dropdownView">
             <div class="image">
               <img :src=imageUrl>
             </div>
@@ -21,20 +21,20 @@
         <el-carousel :interval="4000" type="card" height="400px">
             <el-carousel-item v-for="video in headerVideos" :key="video.id">
               <a @click.stop="imaegClick(video)">
-                <img :src=video.icon trigger="click">
+                <img :src=imageUrl trigger="click">
               </a>
             </el-carousel-item>
         </el-carousel>
       </div>
       <div class="content">
-        <el-row :gutter="20" v-loading="loading"
+        <el-row :gutter="20" v-loading.fullscreen.lock="loading"
             element-loading-text="努力加载中">
           <el-col :span="4" v-for="video in videos" :key="video.id">
             <a @click.stop="imaegClick(video)">
               <el-card :body-style="{ padding: '5px' }" shadow="hover">
-                <img :src=video.icon class="image">
+                <img :src=imageUrl class="image">
                 <div style="padding: 10px 0px;">
-                  <span style="display: block; height: 40px; overflow: hidden; white-space:pre-wrap;">{{video.title}}</span>
+                  <span style="display: block; height: 40px; overflow: hidden; white-space:pre-wrap;">这是一个标题</span>
                   <div class="bottom">
                     <span class="time">时间:{{ video.duration }}</span>
                     <span class="views">观看{{ video.views }}次</span>
@@ -53,7 +53,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import url from '../../assets/image/header.jpg';
+  import url from '@/assets/image/header.jpg';
   import { mapActions, mapGetters } from 'vuex';
 
   const ERR_OK = 0;
@@ -64,7 +64,6 @@
         videos: [],
         loading: false,
         test: false,
-        isShow: true,
         params: {
           count: 10,
           page: 0
@@ -133,7 +132,8 @@
       },
       logout() {
         console.log('退出登录');
-        this.isShow = false;
+        let dropdown = this.$refs.dropdownView;
+        dropdown.isShow = false;
         this.$router.push({ path: '/' });
       },
       showAlert(text) {

@@ -29,7 +29,6 @@
             updateData() {
                 let dataName = this.isPassword ? 'password' : 'user';
                 this.$emit(`update:${dataName}`, this.newText);
-                console.log(dataName);
             },
             inputEvents() {
                 let result = (this.newText.length === 0);
@@ -46,7 +45,6 @@
                 }
             },
             loginClick() {
-                console.log('loginClick');
                 this.$emit('loginClick', 'loginClick');
             }
         },
