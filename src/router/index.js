@@ -2,15 +2,8 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from '@/components/home/home';
 import Login from '@/components/login/login';
-import VueBlu from 'vue-blu';
-import 'vue-blu/dist/css/vue-blu.min.css';
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
+import Info from '@/components/info';
 
-// element-ui
-Vue.use(ElementUI);
-
-Vue.use(VueBlu);
 Vue.use(Router);
 
 export default new Router({
@@ -18,13 +11,18 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'login',
+      name: '登录',
       component: Login
     },
     {
       path: '/home',
-      name: 'home',
-      component: Home
+      name: '主页',
+      component: Home,
+      children: [{
+        path: 'home/info',
+        name: '个人中心',
+        component: Info
+      }]
     }
   ]
 });

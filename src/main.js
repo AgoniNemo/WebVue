@@ -4,7 +4,15 @@ import Vue from 'vue';
 import App from './App';
 import router from './router';
 import store from './store/index';
+import VueBlu from 'vue-blu';
+import 'vue-blu/dist/css/vue-blu.min.css';
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+import '../static/css/reset.css'; // 全局自定义样式
 
+// element-ui
+Vue.use(ElementUI);
+Vue.use(VueBlu);
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */

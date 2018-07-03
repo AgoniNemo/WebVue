@@ -58,7 +58,7 @@
             if (res.code === ERR_OK.toString(10)) {
               this.$nextTick(() => {
                 /* 请求回来是异步的 所以只有在nextTick方法才能更新UI */
-                this.$router.replace({path: 'home', query: { user: res.data.user }});
+                this.$router.replace({path: 'home'});
               });
             } else {
               this.warnAlert(res.message);
