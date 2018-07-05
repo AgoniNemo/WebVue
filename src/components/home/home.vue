@@ -1,5 +1,6 @@
 <template>
-  <el-row>
+ <div>
+    <el-row>
     <el-col :span="24" class="header">
       <dropdown trigger="hover" ref="dropdownView">
         <div class="image">
@@ -16,8 +17,9 @@
         </div>
       </dropdown>
     </el-col>
-    <el-col :span="24" class="main"></el-col>
   </el-row>
+  <router-view></router-view>
+ </div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -90,10 +92,16 @@
         console.log(video.playPath);
       },
       informationManger() {
-        console.log('资料管理');
+         console.log('资料管理');
+        let dropdown = this.$refs.dropdownView;
+        dropdown.isShow = false;
+        this.$router.push({ path: '/home' });
       },
       collectionVideo() {
         console.log('收藏影片');
+        let dropdown = this.$refs.dropdownView;
+        dropdown.isShow = false;
+        this.$router.push({ path: '/home/collectionVideo' });
       },
       personalInformationClick() {
         console.log('个人信息');
@@ -126,10 +134,11 @@
 
 <style lang="stylus" rel="stylesheet/stylus">
   @import "../../common/stylus/mixin";
-  .header
+
+.header
     height: 48px
     box-shadow: 0 10px 18px #888888
-    themeColor()
+    background: #3c81df
     .image
       display: inline-block
       position: absolute
@@ -139,7 +148,4 @@
       width: 40px
       .icon
         border-radius: 50%
-  .main
-    background-color: red
-    height: 50px
 </style>
