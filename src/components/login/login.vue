@@ -30,8 +30,13 @@
         user: '',
         password: '',
         btnClass: 'button is-primary',
-        isDisabled: false
+        isDisabled: false,
+        isChrome: false
       };
+    },
+    created() {
+        const userAgent = navigator.userAgent;
+        this.isChrome = userAgent.indexOf('Chrome') > -1;
     },
     computed: {
       isEmpty() {
@@ -46,6 +51,10 @@
         'loginAction'
       ]),
       loginClick() {
+        if (this.isChrome === false) {
+          this.warnAlert('本网站只支持谷歌浏览器!');
+          return;
+        }
         this.isLoading();
         this.isDisabled = true;
         if (this.isEmpty === false) {

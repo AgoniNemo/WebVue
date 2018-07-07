@@ -9,10 +9,10 @@
           </el-carousel-item>
       </el-carousel>
     </div>
-    <div class="content">
-      <el-row :gutter="20" v-loading.fullscreen.lock="loading"
+    <div class="content" v-loading.fullscreen.lock="loading"
           element-loading-text="努力加载中">
-        <el-col :span="4" v-for="video in videos" :key="video.id">
+      <el-row :gutter="20" v-for="cols in rows" :key="cols.id">
+        <el-col :span="span" v-for="video in cols" :key="video.id">
           <a @click.stop="imaegClick(video)">
             <el-card :body-style="{ padding: '5px' }" shadow="hover">
               <img :src=imageUrl class="image">
@@ -46,6 +46,7 @@
         videos: [],
         loading: false,
         test: false,
+        span: 4,
         params: {
           count: 10,
           page: 0
@@ -56,7 +57,6 @@
       const condition = {
           ...this.params
       };
-      console.log(this.userModel);
       this.enquiriesAction(condition).then((res) => {
           if (res.code === ERR_OK.toString(10)) {
             this.headerVideos = res.data;
@@ -75,6 +75,21 @@
         imageUrl() {
             let headPath = this.userModel.headPath ? this.userModel.headPath : url;
             return headPath;
+        },
+        rows() {
+          let col = 24 / this.span;
+          let groups = [];
+          let total = [];
+          for (let index = 0; index < this.videos.length; index++) {
+            const element = this.videos[index];
+            groups.push(element);
+            if (groups.length % col === 0) {
+              total.push(groups);
+              groups = [];
+            }
+          }
+          console.log(total);
+          return total;
         }
     },
     methods: {
@@ -123,10 +138,10 @@
 <style lang="stylus" rel="stylesheet/stylus">
   @import "../../common/stylus/mixin";
 
-  .home-content
+  .video-content
     width: 100%
     height: 100%
-    .header
+    .video-header
       width: 800px
       height: 430px
       margin-left: auto
@@ -144,7 +159,11 @@
       .el-carousel__item:nth-child(2n+1)
         background-color: #d3dce6
     .content
-        position: relative
+        padding: 10px
+        .el-col
+          margin-top: 10px
+        .el-card
+          min-height: 261px
         .time
           display: inline-block
           width: 84px

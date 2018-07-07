@@ -24,7 +24,6 @@ const router = new Router({
     },
     {
       path: '/home',
-      name: 'Home',
       component: Home,
       meta: {
         keepAlive: false, /* 用于在 <keep-alive> 中使用，判断是否需要进行缓存 */

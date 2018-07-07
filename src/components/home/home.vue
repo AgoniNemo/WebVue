@@ -18,7 +18,11 @@
       </dropdown>
     </el-col>
   </el-row>
-  <router-view></router-view>
+   <!-- <keep-alive> 是Vue的内置组件，能在组件切换过程中将状态保留在内存中，防止重复渲染DOM -->
+  <div class="router-wrapper">
+    <keep-alive><router-view v-if="$route.meta.keepAlive"></router-view></keep-alive>
+    <router-view v-if="!$route.meta.keepAlive"></router-view>
+  </div>
  </div>
 </template>
 
