@@ -29,6 +29,7 @@
 <script type="text/ecmascript-6">
   import url from '@/assets/image/header.jpg';
   import { mapActions, mapGetters } from 'vuex';
+  import { clearLocal } from '@/common/js/store.js';
 
   const ERR_OK = 0;
   export default {
@@ -117,6 +118,7 @@
         console.log('退出登录');
         let dropdown = this.$refs.dropdownView;
         dropdown.isShow = false;
+        clearLocal();
         this.$router.push({ path: '/' });
       },
       showAlert(text) {

@@ -16,6 +16,10 @@ export function saveToLocal(id, key, value) {
   window.localStorage.__obj__ = JSON.stringify(obj);
 };
 
+export function clearLocal() {
+  window.localStorage.clear();
+}
+
 export function loadFromLocal(id, key, def) {
   let obj = window.localStorage.__obj__;
   let ID = (id === null) ? TAG_NAME : id;
