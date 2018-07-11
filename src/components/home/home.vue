@@ -1,5 +1,5 @@
 <template>
- <div>
+ <div class="home-container">
     <el-row>
     <el-col :span="24" class="header">
       <dropdown trigger="hover" ref="dropdownView">
