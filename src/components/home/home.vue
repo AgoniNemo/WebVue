@@ -42,7 +42,8 @@
         params: {
           count: 10,
           page: 0
-        }
+        },
+        menus: []
       };
     },
     created() {
