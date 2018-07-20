@@ -5,7 +5,7 @@ import { loadFromLocal } from '@/common/js/store.js';
 import Login from '@/components/login/login';
 import Info from '@/components/info';
 import Collection from '@/components/CollectionVideo';
-// import VideoView from '@/components/VideoView';
+import VideoView from '@/components/VideoView';
 
 Vue.use(Router);
 
@@ -53,7 +53,7 @@ const router = new Router({
       {
         path: '/home',
         name: 'VideoView',
-        component: Info,
+        component: VideoView,
         meta: {
           keepAlive: true, /* 用于在 <keep-alive> 中使用，判断是否需要进行缓存 */
           auth: true, /* 自定义属性，用于判断是否进行校验,在router.beforeEach中使用 */
