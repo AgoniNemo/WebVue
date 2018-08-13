@@ -1,29 +1,34 @@
 <template>
- <div class="home-container">
-    <el-row>
-    <el-col :span="24" class="header">
-      <dropdown trigger="hover" ref="dropdownView">
-        <div class="image">
-          <img  class="icon" :src=imageUrl>
-        </div>
-        <div slot="content">
-          <menus>
-            <menu-item icon="user" :click=personalInformationClick>个人信息</menu-item>
-            <menu-item icon="ticket" :click=informationManger>资料管理</menu-item>
-            <menu-item icon="heart-o" :click=collectionVideo>收藏影片</menu-item>
-            <div class="divider"></div>
-            <menu-item icon="power-off" :click=logout>退出</menu-item>
-          </menus>
-        </div>
-      </dropdown>
+<div class="home-container">
+   <!-- 头部 -->
+    <div class="header">
+        <dropdown trigger="hover" ref="dropdownView">
+          <div class="image">
+            <img  class="icon" :src=imageUrl>
+          </div>
+          <div slot="content">
+            <menus>
+              <menu-item icon="user" :click=personalInformationClick>个人信息</menu-item>
+              <menu-item icon="ticket" :click=informationManger>资料管理</menu-item>
+              <menu-item icon="heart-o" :click=collectionVideo>收藏影片</menu-item>
+              <div class="divider"></div>
+              <menu-item icon="power-off" :click=logout>退出</menu-item>
+            </menus>
+          </div>
+        </dropdown>
+   </div>
+   <el-row class="container">
+    <el-col :span="24" class="main-container">
+        <section class="content-container">
+          <!-- <keep-alive> 是Vue的内置组件，能在组件切换过程中将状态保留在内存中，防止重复渲染DOM -->
+          <div class="router-wrapper">
+            <keep-alive><router-view v-if="$route.meta.keepAlive"></router-view></keep-alive>
+            <router-view v-if="!$route.meta.keepAlive"></router-view>
+          </div>
+        </section>
     </el-col>
-  </el-row>
-   <!-- <keep-alive> 是Vue的内置组件，能在组件切换过程中将状态保留在内存中，防止重复渲染DOM -->
-  <div class="router-wrapper">
-    <keep-alive><router-view v-if="$route.meta.keepAlive"></router-view></keep-alive>
-    <router-view v-if="!$route.meta.keepAlive"></router-view>
-  </div>
- </div>
+   </el-row>
+</div>
 </template>
 
 <script type="text/ecmascript-6">
