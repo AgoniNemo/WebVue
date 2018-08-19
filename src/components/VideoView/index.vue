@@ -9,24 +9,24 @@
           </el-carousel-item>
       </el-carousel>
     </div>
-    <div class="content" v-loading.fullscreen.lock="loading"
+    <div class="content " v-loading.fullscreen.lock="loading"
           element-loading-text="努力加载中">
-      <el-row :gutter="20" v-for="cols in rows" :key="cols.id">
-        <el-col :span="span" v-for="video in cols" :key="video.id">
-          <a @click.stop="imaegClick(video)">
-            <el-card :body-style="{ padding: '5px' }" shadow="hover">
-              <img :src=imageUrl class="image">
-              <div style="padding: 10px 0px;">
-                <span style="display: block; height: 40px; overflow: hidden; white-space:pre-wrap;">这是一个标题</span>
-                <div class="bottom">
-                  <span class="time">时间:{{ video.duration }}</span>
-                  <span class="views">观看{{ video.views }}次</span>
-                </div>
-              </div>
-            </el-card>
+      <div class="over-flow itme-content">
+          <div class="itme" v-for=" video in videos" :key="video.id">
+            <a @click.stop="imaegClick(video)">
+                <el-card :body-style="{ padding: '5px' }" shadow="hover">
+                  <img :src=imageUrl class="image">
+                  <div style="padding: 10px 0px;">
+                    <span style="display: block; height: 40px; overflow: hidden; white-space:pre-wrap;">这是一个标题</span>
+                    <div class="bottom">
+                      <span class="time">时间:{{ video.duration }}</span>
+                      <span class="views">观看{{ video.views }}次</span>
+                    </div>
+                  </div>
+                </el-card>
             </a>
-        </el-col>
-      </el-row>
+        </div>
+      </div>
     </div>
     <div class="foot">
       <pagination :total="969" :change=pageClick layout="total, pager, jumper" :page-size="30"></pagination>
@@ -104,6 +104,7 @@
         this.enquiriesAction(condition).then((res) => {
             if (res.code === ERR_OK.toString(10)) {
               this.videos = res.data;
+              console.log(this.videos.count);
             } else {
               this.warnAlert(res.message);
             }
@@ -157,33 +158,38 @@
       .el-carousel__item:nth-child(2n)
         background-color: #99a9bf
       .el-carousel__item:nth-child(2n+1)
-        background-color: #d3dce6
+        background-color: #d3dce6s
     .content
-        padding: 10px
-        .el-col
-          margin-top: 10px
-        .el-card
-          min-height: 261px
-        .time
-          display: inline-block
-          width: 84px
-          font-size: 13px
-          color: #999
-        .bottom
-          margin-top: 13px
-          line-height: 12px
-          .views
-            font-size: 15px
-            float: right
-        .image
-          width: 100%
-          display: block
-        .clearfix:before,
-        .clearfix:after
-            display: table
-            content: ""
-        .clearfix:after
-            clear: both
+      padding: 10px
+      .itme-content
+        margin:0px auto
+      .over-flow
+        overflow: auto; zoom: 1
+        padding: 20px
+        .itme
+          float: left;
+          width: 210px;
+          .time
+            display: inline-block
+            width: 84px
+            font-size: 13px
+            color: #999
+          .bottom
+            margin-top: 13px
+            line-height: 12px
+            .views
+              font-size: 15px
+              float: right
+          .image
+            width: 100%
+            display: block
+          .clearfix:before,
+          .clearfix:after
+              display: table
+              content: ""
+          .clearfix:after
+              clear: both
     .foot
+      padding-top: 10px
       height: 50px
 </style>
