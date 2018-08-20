@@ -16,8 +16,8 @@
             <a @click.stop="imaegClick(video)">
                 <el-card :body-style="{ padding: '5px' }" shadow="hover">
                   <img :src=imageUrl class="image">
-                  <div style="padding: 10px 0px;">
-                    <span style="display: block; height: 40px; overflow: hidden; white-space:pre-wrap;">这是一个标题</span>
+                  <div style="padding: 10px 0px; text-align: start;">
+                    <div class="title">这是一个标题</div>
                     <div class="bottom">
                       <span class="time">时间:{{ video.duration }}</span>
                       <span class="views">观看{{ video.views }}次</span>
@@ -162,13 +162,16 @@
     .content
       padding: 10px
       .itme-content
-        margin:0px auto
-      .over-flow
-        overflow: auto; zoom: 1
         padding: 20px
+        text-align: center
         .itme
-          float: left;
+          display: inline-block
           width: 210px;
+          padding: 0 5px 10px;
+          .title
+            font-size: 15px
+            overflow: hidden
+            white-space:pre-wrap
           .time
             display: inline-block
             width: 84px

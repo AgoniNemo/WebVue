@@ -1,11 +1,11 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from '@/components/home/home';
+import Home from '@/view/home/home';
 import { loadFromLocal } from '@/common/js/store.js';
-import Login from '@/components/login/login';
-import Info from '@/components/info';
-import Collection from '@/components/CollectionVideo';
-import VideoView from '@/components/VideoView';
+import Login from '@/view/login/login';
+import Info from '@/view/info';
+import Collection from '@/view/CollectionVideo';
+import VideoView from '@/view/VideoView';
 
 Vue.use(Router);
 
