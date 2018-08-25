@@ -4,7 +4,7 @@
       <el-carousel :interval="4000" type="card" height="400px">
           <el-carousel-item v-for="video in headerVideos" :key="video.id">
             <a @click.stop="imaegClick(video)">
-              <img :src=imageUrl trigger="click">
+              <img :src=iconUrl trigger="click">
             </a>
           </el-carousel-item>
       </el-carousel>
@@ -15,9 +15,9 @@
           <div class="itme" v-for=" video in videos" :key="video.id">
             <a @click.stop="imaegClick(video)">
                 <el-card :body-style="{ padding: '5px' }" shadow="hover">
-                  <img :src=imageUrl class="image">
+                  <img :src=video.icon class="image">
                   <div style="padding: 10px 0px; text-align: start;">
-                    <div class="title">这是一个标题</div>
+                    <div class="title">{{isTest ? '这是一个标题 这是一个标题 这是一个标题 这是一个标题':video.title}}</div>
                     <div class="bottom">
                       <span class="time">时间:{{ video.duration }}</span>
                       <span class="views">观看{{ video.views }}次</span>
@@ -45,7 +45,7 @@
         headerVideos: [],
         videos: [],
         loading: false,
-        test: false,
+        isTest: false,
         span: 4,
         params: {
           count: 10,
@@ -72,9 +72,9 @@
         ...mapGetters([
             'userModel'
         ]),
-        imageUrl() {
-            let headPath = this.userModel.headPath ? this.userModel.headPath : url;
-            return headPath;
+        iconUrl() {
+          let headPath = this.userModel.headPath ? this.userModel.headPath : url;
+          return headPath;
         },
         rows() {
           let col = 24 / this.span;
@@ -172,6 +172,8 @@
             font-size: 15px
             overflow: hidden
             white-space:pre-wrap
+            text-overflow:ellipsis
+            height: 44px
           .time
             display: inline-block
             width: 84px

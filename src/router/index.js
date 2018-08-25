@@ -6,6 +6,7 @@ import Login from '@/view/login/login';
 import Info from '@/view/info';
 import Collection from '@/view/CollectionVideo';
 import VideoView from '@/view/VideoView';
+import VideoPlayView from '@/view/VideoPlayView';
 
 Vue.use(Router);
 
@@ -58,6 +59,16 @@ const router = new Router({
           keepAlive: true, /* 用于在 <keep-alive> 中使用，判断是否需要进行缓存 */
           auth: true, /* 自定义属性，用于判断是否进行校验,在router.beforeEach中使用 */
           title: '首页' /* 可以通过$route.meta.title 后取当前的描述信息、菜单信息 */
+        }
+      },
+      {
+        path: '/home',
+        name: 'VideoPlayView',
+        component: VideoPlayView,
+        meta: {
+          keepAlive: true, /* 用于在 <keep-alive> 中使用，判断是否需要进行缓存 */
+          auth: true, /* 自定义属性，用于判断是否进行校验,在router.beforeEach中使用 */
+          title: '观看影片' /* 可以通过$route.meta.title 后取当前的描述信息、菜单信息 */
         }
       }]
     },

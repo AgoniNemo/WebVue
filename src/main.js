@@ -8,6 +8,7 @@ import VueBlu from 'vue-blu';
 import 'vue-blu/dist/css/vue-blu.min.css';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import 'video.js/dist/video-js.css';
 /** import '../static/css/reset.css'; 全局自定义样式 */
 
 // element-ui

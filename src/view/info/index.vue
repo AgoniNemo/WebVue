@@ -1,7 +1,9 @@
 <template>
     <div class="info-content">
         <div class="info-header">
-            <img  class="info-icon" :src=imageUrl>
+            <el-card  class="box-card" shadow="hover">
+                    <img  class="info-icon" :src=imageUrl>
+            </el-card>
         </div>
     </div>
 </template>
