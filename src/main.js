@@ -8,8 +8,11 @@ import VueBlu from 'vue-blu';
 import 'vue-blu/dist/css/vue-blu.min.css';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import 'video.js/dist/video-js.css';
+import VideoPlayer from 'vue-video-player';
 /** import '../static/css/reset.css'; 全局自定义样式 */
+require('video.js/dist/video-js.css');
+require('vue-video-player/src/custom-theme.css');
+Vue.use(VideoPlayer);
 
 // element-ui
 Vue.use(ElementUI);

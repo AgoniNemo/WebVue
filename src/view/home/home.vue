@@ -2,6 +2,7 @@
 <div class="home-container">
    <!-- 头部 -->
     <div class="header">
+        <router-link :to="{path: '/home'}"><img :src="webUrl" style="width:48px;height:48px;margin-left: 10px;"></router-link>
         <dropdown trigger="hover" ref="dropdownView">
           <div class="image">
             <img  class="icon" :src=imageUrl>
@@ -33,39 +34,16 @@
 
 <script type="text/ecmascript-6">
   import url from '@/assets/image/header.jpg';
-  import { mapActions, mapGetters } from 'vuex';
+  import webIcon from '@/assets/image/icon.png';
+  import { mapGetters } from 'vuex';
   import { clearLocal } from '@/common/js/store.js';
 
-  const ERR_OK = 0;
   export default {
     data() {
       return {
-        headerVideos: [],
-        videos: [],
-        loading: false,
         test: false,
-        params: {
-          count: 10,
-          page: 0
-        },
         menus: []
       };
-    },
-    created() {
-      const condition = {
-          ...this.params
-      };
-      console.log(this.userModel);
-      this.enquiriesAction(condition).then((res) => {
-          if (res.code === ERR_OK.toString(10)) {
-            this.headerVideos = res.data;
-          } else {
-            this.warnAlert(res.message);
-          }
-      });
-      this.params.page = this.params.page + 1;
-      this.params.count = 30;
-      this.requestData();
     },
     computed: {
         ...mapGetters([
@@ -74,31 +52,12 @@
         imageUrl() {
             let headPath = this.userModel.headPath ? this.userModel.headPath : url;
             return headPath;
+        },
+        webUrl() {
+          return webIcon;
         }
     },
     methods: {
-      ...mapActions([
-        'enquiriesAction'
-      ]),
-      requestData() {
-        const condition = {
-          ...this.params
-        };
-        this.loading = true;
-        this.enquiriesAction(condition).then((res) => {
-            if (res.code === ERR_OK.toString(10)) {
-              this.videos = res.data;
-            } else {
-              this.warnAlert(res.message);
-            }
-            this.loading = false;
-        });
-      },
-      pageClick(page) {
-          this.params.page = page;
-          this.requestData();
-          console.log(this.params.page);
-      },
       imaegClick(video) {
         console.log(video.playPath);
       },

@@ -14,10 +14,12 @@
       <div class="over-flow itme-content">
           <div class="itme" v-for=" video in videos" :key="video.id">
             <a @click.stop="imaegClick(video)">
-                <el-card :body-style="{ padding: '5px' }" shadow="hover">
+                 <el-card :body-style="{ padding: '5px' }" shadow="hover">
                   <img :src=video.icon class="image">
                   <div style="padding: 10px 0px; text-align: start;">
-                    <div class="title">{{isTest ? '这是一个标题 这是一个标题 这是一个标题 这是一个标题':video.title}}</div>
+                    <el-tooltip :content="video.title" placement="top" effect="light">
+                      <div class="title">{{isTest ? '这是一个标题 这是一个标题 这是一个标题 这是一个标题':video.title}}</div>
+                    </el-tooltip>
                     <div class="bottom">
                       <span class="time">时间:{{ video.duration }}</span>
                       <span class="views">观看{{ video.views }}次</span>
@@ -57,10 +59,14 @@
       const condition = {
           ...this.params
       };
-      this.enquiriesAction(condition).then((res) => {
+      this.enquiriesVideoListAction(condition).then((res) => {
           if (res.code === ERR_OK.toString(10)) {
             this.headerVideos = res.data;
           } else {
+            if (res.code === '1003') {
+              this.$router.push({ path: '/login' });
+              return;
+            }
             this.warnAlert(res.message);
           }
       });
@@ -75,37 +81,26 @@
         iconUrl() {
           let headPath = this.userModel.headPath ? this.userModel.headPath : url;
           return headPath;
-        },
-        rows() {
-          let col = 24 / this.span;
-          let groups = [];
-          let total = [];
-          for (let index = 0; index < this.videos.length; index++) {
-            const element = this.videos[index];
-            groups.push(element);
-            if (groups.length % col === 0) {
-              total.push(groups);
-              groups = [];
-            }
-          }
-          console.log(total);
-          return total;
         }
     },
     methods: {
       ...mapActions([
-        'enquiriesAction'
+        'enquiriesVideoListAction',
+        'commitVideoModelAction'
       ]),
       requestData() {
         const condition = {
           ...this.params
         };
         this.loading = true;
-        this.enquiriesAction(condition).then((res) => {
+        this.enquiriesVideoListAction(condition).then((res) => {
             if (res.code === ERR_OK.toString(10)) {
               this.videos = res.data;
-              console.log(this.videos.count);
             } else {
+              if (res.code === '1003') {
+                this.$router.push({ path: '/login' });
+                return;
+              }
               this.warnAlert(res.message);
             }
             this.loading = false;
@@ -114,10 +109,11 @@
       pageClick(page) {
           this.params.page = page;
           this.requestData();
-          console.log(this.params.page);
       },
       imaegClick(video) {
-        console.log(video.playPath);
+        this.commitVideoModelAction(video).then((res) => {
+          this.$router.push({ path: '/home/videoPlayView' });
+        });
       },
       showAlert(text) {
         this.$modal.open({

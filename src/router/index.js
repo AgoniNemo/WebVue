@@ -62,11 +62,11 @@ const router = new Router({
         }
       },
       {
-        path: '/home',
+        path: 'VideoPlayView',
         name: 'VideoPlayView',
         component: VideoPlayView,
         meta: {
-          keepAlive: true, /* 用于在 <keep-alive> 中使用，判断是否需要进行缓存 */
+          keepAlive: false, /* 用于在 <keep-alive> 中使用，判断是否需要进行缓存 */
           auth: true, /* 自定义属性，用于判断是否进行校验,在router.beforeEach中使用 */
           title: '观看影片' /* 可以通过$route.meta.title 后取当前的描述信息、菜单信息 */
         }
