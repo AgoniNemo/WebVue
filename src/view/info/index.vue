@@ -9,7 +9,7 @@
                     <img :src="iconUrl">
                 </div>
                 <div class="info-name">
-                    {{this.userModel.name}}
+                    <div>{{this.userModel.name}}</div>
                 </div>
             </div>
         </div>
@@ -19,15 +19,15 @@
 <script type="text/ecmascript-6">
 import url from '@/assets/image/nav.jpg';
 import icon from '@/assets/image/header.jpg';
-import { mapGetters } from 'vuex';
+import { loadFromLocal } from '@/common/js/store.js';
 
 export default {
-
+    data() {
+        return {
+            userModel: loadFromLocal(null, 'logining', false)
+        };
+    },
     computed: {
-        ...mapGetters([
-            'userModel',
-            'videoModel'
-        ]),
         imageUrl() {
             return url;
         },
@@ -55,11 +55,14 @@ export default {
         height: 160px
         border: 5px solid #fff
         background: #fff
-        margin: -20px 0 0 20px;
+        margin: -40px 0 0 20px;
         border-radius: 5px;
     .info-name
         display: inline-block
-        height: 40px;
-        width: 100px;
-        font-weight: 20px;
+        position: relative
+        background: orange;
+        font-weight: bold;
+        font-size: 20px;
+        margin-left: 10px;
+        top: -80px;
 </style>
