@@ -1,6 +1,6 @@
 <template>
     <div class="video-player-container">
-      <div class="video-title-container">{{this.videoModel.title}}</div>
+      <div class="video-title-container">{{isTestTitle(this.videoModel.title)}}</div>
       <div class="player-container">
         <video-player class="vjs-custom-skin"
                 ref="videoPlayer"
@@ -12,7 +12,12 @@
       </div>
       <div class="comment-container" v-loading.lock="loading"
           element-loading-text="努力加载中">
-        <div class="comment-count-container">{{commentCount}}</div>
+        <div class="comment-count-container">
+          <div style="display: inline-block;">{{commentCount}}</div>
+          <div style="display: inline-block;" @click="collectionAction">
+              <i :class="collectionIcon"></i>
+          </div>
+        </div>
         <div class="comment-list-container">
           <div class="comment-input-container">
             <div class="comment-image-container">
@@ -46,7 +51,7 @@
 import { parseTime } from '@/utils/DateUtils.js';
 import { videoPlayer } from 'vue-video-player';
 import mp4 from '@/assets/video/test.mp4';
-import bg from '@/assets/image/nav.jpg';
+import bg from '@/assets/home/back.png';
 import url from '@/assets/image/header.jpg';
 import { mapActions, mapGetters } from 'vuex';
 
@@ -70,6 +75,7 @@ export default {
           poster: bg
         },
         loading: false,
+        collectionIcon: 'el-icon-star-off',
         commitKey: '',
         commitList: []
       };
@@ -90,7 +96,8 @@ export default {
     computed: {
       ...mapGetters([
           'userModel',
-          'videoModel'
+          'videoModel',
+          'isTest'
       ]),
       iconUrl() {
         let headPath = this.userModel.headPath ? this.userModel.headPath : url;
@@ -111,21 +118,58 @@ export default {
     created() {
       this.$nextTick(function () {
         console.log('this.$el.textContent', this.videoModel);
-        this.playerOptions.sources[0].src = this.videoModel.playPath;
-        this.playerOptions.poster = this.videoModel.icon;
+        this.playerOptions.sources[0].src = this.isTest ? mp4 : this.videoModel.playPath;
+        this.playerOptions.poster = this.isTest ? bg : this.videoModel.icon;
       });
     },
     methods: {
       ...mapActions([
         'refreshVideoModelAction',
         'enquiriesCommentListVideo',
-        'commentVideoAction'
+        'commentVideoAction',
+        'collectionVideoAction'
       ]),
       onPlayerPlay(player) {
         console.log('player', this.videoModel.playPath);
       },
       onPlayerPause(player) {
          console.log('player', this.videoModel.playPath);
+      },
+      isTestUrl() {
+        return this.isTest ? url : this.videoModel.title;
+      },
+      isTestTitle(title) {
+        return this.isTest ? '这是一个标题 这是一个标题 这是一个标题 这是一个标题' : title;
+      },
+      collectionAction() {
+          this.$confirm('确定要收藏该影片,是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'info'
+          }).then(() => {
+            this.collectionVideo();
+          }).catch(() => {
+            console.log('取消');
+          });
+      },
+      collectionVideo() {
+       let b = (this.collectionIcon === 'el-icon-star-off');
+       const parm = {
+          id: this.videoModel.videoId,
+          collection: b ? '1' : '0'
+        };
+        this.collectionVideoAction(parm).then(res => {
+          if (res.code === ERR_OK.toString(10)) {
+              this.warnAlert('收藏成功!');
+              this.collectionIcon = b ? 'el-icon-star-on' : 'el-icon-star-off';
+            } else {
+              if (res.code === '1003') {
+                this.$router.push({ path: '/login' });
+                return;
+              }
+              this.warnAlert(res.message);
+          }
+        });
       },
       commentClick() {
         const condition = {
@@ -201,7 +245,8 @@ export default {
       .comment-count-container
         margin-bottom: 10px
         font-size: 20px;
-        text-align: start;
+        display: flex;
+        justify-content:space-between
       .comment-list-container
         display: inline-block;
         width: 700px

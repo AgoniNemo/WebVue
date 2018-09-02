@@ -4,21 +4,21 @@
       <el-carousel :interval="4000" type="card" height="400px">
           <el-carousel-item v-for="video in headerVideos" :key="video.id">
             <a @click.stop="imaegClick(video)">
-              <img :src=video.icon trigger="click">
+              <img :src="isTestUrl(video.icon)" trigger="click">
             </a>
           </el-carousel-item>
       </el-carousel>
     </div>
-    <div class="content " v-loading.fullscreen.lock="loading"
+    <div class="content" v-loading.fullscreen.lock="loading"
           element-loading-text="努力加载中">
       <div class="over-flow itme-content">
           <div class="itme" v-for=" video in videos" :key="video.id">
             <a @click.stop="imaegClick(video)">
                  <el-card :body-style="{ padding: '5px' }" shadow="hover">
-                  <img :src=video.icon class="image">
+                  <img :src="isTestUrl(video.icon)" class="image">
                   <div style="padding: 10px 0px; text-align: start;">
-                    <el-tooltip :content="video.title" placement="top" effect="light">
-                      <div class="title">{{isTest ? '这是一个标题 这是一个标题 这是一个标题 这是一个标题':video.title}}</div>
+                    <el-tooltip :content="isTestTitle(video.title)" placement="top" effect="light">
+                      <div class="title">{{isTestTitle(video.title)}}</div>
                     </el-tooltip>
                     <div class="bottom">
                       <span class="time">时间:{{ video.duration }}</span>
@@ -47,7 +47,6 @@
         headerVideos: [],
         videos: [],
         loading: false,
-        isTest: false,
         span: 4,
         params: {
           count: 10,
@@ -76,7 +75,8 @@
     },
     computed: {
         ...mapGetters([
-            'userModel'
+            'userModel',
+            'isTest'
         ]),
         iconUrl() {
           let headPath = this.userModel.headPath ? this.userModel.headPath : url;
@@ -109,6 +109,12 @@
       pageClick(page) {
           this.params.page = page;
           this.requestData();
+      },
+      isTestUrl(icon) {
+        return this.isTest ? url : icon;
+      },
+      isTestTitle(title) {
+        return this.isTest ? '这是一个标题 这是一个标题 这是一个标题 这是一个标题' : title;
       },
       imaegClick(video) {
         this.commitVideoModelAction(video).then((res) => {

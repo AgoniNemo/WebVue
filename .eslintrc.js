@@ -28,6 +28,9 @@ module.exports = {
     'semi': ['error','always'],
     'indent': 0,
     'space-before-function-paren': 0,
-    "skipBlankLines": true
+    "skipBlankLines": true,
+    "vue/no-parsing-error": [2, {
+        "control-character-in-input-stream": false
+    }]
   }
 }

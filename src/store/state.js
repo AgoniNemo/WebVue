@@ -1,7 +1,8 @@
 
 const state = {
     userModel: {},
-    videoModel: {}
+    videoModel: {},
+    isTest: false
 };
 
 export default state;

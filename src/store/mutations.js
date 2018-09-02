@@ -6,6 +6,9 @@ const mutations = {
     },
     [types.SET_VIDEOMODEL](state, videoModel) {
         state.videoModel = videoModel;
+    },
+    [types.SET_ISTEST](state, isTest) {
+        state.isTest = isTest;
     }
 };
 

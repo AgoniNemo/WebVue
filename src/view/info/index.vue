@@ -17,10 +17,13 @@
                 <div class="user-info-content">
                     <el-form label-position="left" :label-width="labelWidth" :model="userModel">
                         <el-form-item label="性别:" style="height:40px;">
-                            <span>{{userModel.sex | filterSex}}</span>
+                            <span>{{userModel.sex}}</span>
                         </el-form-item>
                         <el-form-item label="年龄:" style="height:40px;">
                             <span>{{userModel.age | filterAge}}</span>
+                        </el-form-item>
+                        <el-form-item label="手机号:" style="height:40px;">
+                            <span>{{userModel.phoneNumber | filterPhoneNumber}}</span>
                         </el-form-item>
                         <el-form-item label="权限:">
                             <span>{{userModel.authority | filterAuthor}}</span>
@@ -45,6 +48,10 @@ export default {
         };
     },
     filters: {
+        filterPhoneNumber(phoneNumber) {
+            if (phoneNumber === '') return '未知';
+            return phoneNumber;
+        },
         filterAge(age) {
             if (age === '') return '未知';
             return age;
@@ -68,7 +75,8 @@ export default {
             return url;
         },
         iconUrl() {
-            return icon;
+            let headPath = this.userModel.headPath ? this.userModel.headPath : icon;
+            return headPath;
         }
     }
 

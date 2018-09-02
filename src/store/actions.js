@@ -2,7 +2,9 @@ import * as types from './mutations-types';
 import { requestLogin,
         requestLatestVideo,
         requestCommentListVideo,
-        requestCommentVideo} from '@/api';
+        requestCommentVideo,
+        requestCollectionListVideo,
+        requestColStateVideo} from '@/api';
 import { saveToLocal, loadFromLocal } from '@/common/js/store.js';
 
 /**
@@ -19,6 +21,7 @@ export const loginAction = ({commit}, params) => {
         requestLogin(params).then(res => {
             const model = res.data;
             commit(types.SET_USER, model);
+            commit(types.SET_ISTEST, (model.authority !== '1005'));
             saveToLocal(null, 'logining', model);
             resolve(res);
         }).catch(e => {
@@ -42,6 +45,7 @@ export const enquiriesVideoListAction = ({commit}, params) => {
         const model = loadFromLocal(null, 'logining', false);
         params.user = model.user;
         params.token = model.token;
+        commit(types.SET_ISTEST, (model.authority !== '1005'));
         requestLatestVideo(params).then((res) => {
             commit(types.SET_USER, model);
             resolve(res);
@@ -129,7 +133,59 @@ export const commitVideoModelAction = ({commit}, params) => {
 export const refreshVideoModelAction = ({commit}) => {
     return new Promise((resolve, reject) => {
         const videoModel = loadFromLocal(null, 'videoModel', false);
+        const model = loadFromLocal(null, 'logining', false);
+        commit(types.SET_ISTEST, (model.authority !== '1005'));
         commit(types.SET_VIDEOMODEL, videoModel);
         resolve(videoModel);
+    });
+};
+
+/**
+ * 用户收藏影片列表
+ *
+ * @class      collectionVideoListAction (name)
+ * @param      {Object}    arg1         The argument 1
+ * @param      {Function}  arg1.commit  The commit
+ * @param      {<type>}    params  The account data
+ * @return     {Promise}   { description_of_the_return_value }
+ */
+export const collectionVideoListAction = ({commit}, params) => {
+    return new Promise((resolve, reject) => {
+        const model = loadFromLocal(null, 'logining', false);
+        params.user = model.user;
+        params.token = model.token;
+        requestCollectionListVideo(params).then((res) => {
+            commit(types.SET_USER, model);
+            commit(types.SET_ISTEST, (model.authority !== '1005'));
+            resolve(res);
+        }).catch(e => {
+            console.log(e);
+            resolve(e);
+        });
+    });
+};
+
+/**
+ * 用户收藏影片
+ *
+ * @class      collectionVideoAction (name)
+ * @param      {Object}    arg1         The argument 1
+ * @param      {Function}  arg1.commit  The commit
+ * @param      {<type>}    params  The account data
+ * @return     {Promise}   { description_of_the_return_value }
+ */
+export const collectionVideoAction = ({commit}, params) => {
+    return new Promise((resolve, reject) => {
+        const model = loadFromLocal(null, 'logining', false);
+        params.user = model.user;
+        params.token = model.token;
+        requestColStateVideo(params).then((res) => {
+            commit(types.SET_USER, model);
+            commit(types.SET_ISTEST, (model.authority !== '1005'));
+            resolve(res);
+        }).catch(e => {
+            console.log(e);
+            resolve(e);
+        });
     });
 };

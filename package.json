@@ -10,17 +10,20 @@
     "e2e": "node test/e2e/runner.js",
     "test": "npm run e2e",
     "lint": "eslint --ext .js,.vue src test/e2e/specs",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "build:prod": "cross-env NODE_ENV=production env_config=prod node build/build.js",
+    "testing": "cross-env NODE_ENV=production env_config=test node build/build.js"
   },
   "dependencies": {
     "axios": "^0.17.1",
     "babel-runtime": "^6.26.0",
+    "cross-env": "^5.2.0",
     "element-ui": "^2.4.1",
     "vue": "^2.5.2",
     "vue-blu": "^0.1.9",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1",
-    "vue-video-player":"^5.0.2"
+    "vue-video-player": "^5.0.2",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
