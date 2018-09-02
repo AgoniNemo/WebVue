@@ -117,7 +117,6 @@ export default {
     },
     created() {
       this.$nextTick(function () {
-        console.log('this.$el.textContent', this.videoModel);
         this.playerOptions.sources[0].src = this.isTest ? mp4 : this.videoModel.playPath;
         this.playerOptions.poster = this.isTest ? bg : this.videoModel.icon;
       });
@@ -130,10 +129,10 @@ export default {
         'collectionVideoAction'
       ]),
       onPlayerPlay(player) {
-        console.log('player', this.videoModel.playPath);
+        console.log('onPlayerPlay');
       },
       onPlayerPause(player) {
-         console.log('player', this.videoModel.playPath);
+         console.log('onPlayerPause');
       },
       isTestUrl() {
         return this.isTest ? url : this.videoModel.title;

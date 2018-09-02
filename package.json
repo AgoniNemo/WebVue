@@ -12,7 +12,7 @@
     "lint": "eslint --ext .js,.vue src test/e2e/specs",
     "build": "node build/build.js",
     "build:prod": "cross-env NODE_ENV=production env_config=prod node build/build.js",
-    "testing": "cross-env NODE_ENV=production env_config=test node build/build.js"
+    "testing": "cross-env NODE_ENV=testing env_config=test node build/build.js"
   },
   "dependencies": {
     "axios": "^0.17.1",

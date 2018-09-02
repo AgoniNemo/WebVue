@@ -34,9 +34,6 @@
                 let result = (this.newText.length === 0);
                 this.showText = result;
             },
-            focus() {
-                console.log(this.isPassword);
-            },
             blur() {
                 if (this.newText.length === 0) {
                     this.showText = true;

@@ -17,7 +17,7 @@
                 <div class="user-info-content">
                     <el-form label-position="left" :label-width="labelWidth" :model="userModel">
                         <el-form-item label="性别:" style="height:40px;">
-                            <span>{{userModel.sex}}</span>
+                            <span>{{userModel.sex | filterSex}}</span>
                         </el-form-item>
                         <el-form-item label="年龄:" style="height:40px;">
                             <span>{{userModel.age | filterAge}}</span>
@@ -58,7 +58,7 @@ export default {
         },
         filterSex(sex) {
             if (sex === '') return '未知';
-            return (sex === '1') ? '男' : '女';
+            return sex;
         },
         filterAuthor(auth) {
             if (auth === '') return '未知';
