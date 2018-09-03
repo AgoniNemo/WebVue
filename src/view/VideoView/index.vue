@@ -199,4 +199,5 @@
     .foot
       padding-top: 10px
       height: 50px
+      margin-bottom: 30px;
 </style>
