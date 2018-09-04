@@ -109,12 +109,37 @@
       pageClick(page) {
           this.params.page = page;
           this.requestData();
+          this.jump();
       },
       isTestUrl(icon) {
         return this.isTest ? url : icon;
       },
       isTestTitle(title) {
         return this.isTest ? '这是一个标题 这是一个标题 这是一个标题 这是一个标题' : title;
+      },
+      jump() {
+        let jumpDiv = document.querySelectorAll('.itme-content');
+          // 获取需要滚动的距离
+          let total = jumpDiv[0].offsetTop;
+          // 平滑滚动，时长500ms，每10ms一跳，共50跳
+          // 获取当前滚动条与窗体顶部的距离
+          let distance = document.documentElement.scrollTop || document.body.scrollTop;
+          // 计算每一小段的距离
+          let step = total / 50;
+          (function smoothDown () {
+            if (distance < total) {
+                distance += step;
+                // 移动一小段
+                document.body.scrollTop = distance;
+                    document.documentElement.scrollTop = distance;
+                // 设定每一次跳动的时间间隔为10ms
+                setTimeout(smoothDown, 50);
+            } else {
+              // 限制滚动停止时的距离
+              document.body.scrollTop = total;
+              document.documentElement.scrollTop = total;
+            }
+          })();
       },
       imaegClick(video) {
         this.commitVideoModelAction(video).then((res) => {

@@ -1,13 +1,14 @@
 <template>
     <div class="video-player-container">
       <div class="video-title-container">{{isTestTitle(this.videoModel.title)}}</div>
-      <div class="player-container">
+      <div class="player-container" >
         <video-player class="vjs-custom-skin"
                 ref="videoPlayer"
                 :playsinline="true"
                 :options="playerOptions"
                 @play="onPlayerPlay($event)"
-                @pause="onPlayerPause($event)">
+                @pause="onPlayerPause($event)"
+                @click.keyup.space="spaceAction">
         </video-player>
       </div>
       <div class="comment-container" v-loading.lock="loading"
@@ -133,6 +134,9 @@ export default {
       },
       onPlayerPause(player) {
          console.log('onPlayerPause');
+      },
+      spaceAction() {
+        console.log('spaceAction');
       },
       isTestUrl() {
         return this.isTest ? url : this.videoModel.title;
