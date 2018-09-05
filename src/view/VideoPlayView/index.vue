@@ -1,14 +1,13 @@
 <template>
     <div class="video-player-container">
       <div class="video-title-container">{{isTestTitle(this.videoModel.title)}}</div>
-      <div class="player-container" >
+      <div class="player-container">
         <video-player class="vjs-custom-skin"
                 ref="videoPlayer"
                 :playsinline="true"
                 :options="playerOptions"
                 @play="onPlayerPlay($event)"
-                @pause="onPlayerPause($event)"
-                @click.keyup.space="spaceAction">
+                @pause="onPlayerPause($event)" @keyup.enter="spaceAction">
         </video-player>
       </div>
       <div class="comment-container" v-loading.lock="loading"
@@ -75,6 +74,8 @@ export default {
           }],
           poster: bg
         },
+        seekStep: 10, /// 后退与进行时间
+        volumeStep: 0.05, /// 加减音量
         loading: false,
         collectionIcon: 'el-icon-star-off',
         commitKey: '',
@@ -121,6 +122,24 @@ export default {
         this.playerOptions.sources[0].src = this.isTest ? mp4 : this.videoModel.playPath;
         this.playerOptions.poster = this.isTest ? bg : this.videoModel.icon;
       });
+      let component = this;
+      document.onkeydown = function(e) {
+            if (e.keyCode === 32) {
+              component.spaceAction();
+              e.preventDefault();
+            } else if (e.keyCode === 37) {
+              component.controlLeft();
+            } else if (e.keyCode === 38) {
+              component.controlUp();
+              e.preventDefault();
+            } else if (e.keyCode === 39) {
+              component.controlRight();
+              e.preventDefault();
+            } else if (e.keyCode === 40) {
+              component.controlDown();
+              e.preventDefault();
+            }
+      };
     },
     methods: {
       ...mapActions([
@@ -135,8 +154,30 @@ export default {
       onPlayerPause(player) {
          console.log('onPlayerPause');
       },
+      controlUp() {
+        let currentVolume = this.$refs.videoPlayer.player.currentTime();
+        this.$refs.videoPlayer.player.volume(currentVolume + this.volumeStep);
+        console.log('controlUp', this.$refs.videoPlayer.player.currentTime());
+      },
+      controlDown() {
+        let currentVolume = this.$refs.videoPlayer.player.currentTime();
+        this.$refs.videoPlayer.player.volume(currentVolume - this.volumeStep);
+        console.log('controlDown', this.$refs.videoPlayer.player.currentTime());
+      },
+      controlLeft() {
+        let currentTime = this.$refs.videoPlayer.player.currentTime();
+        this.$refs.videoPlayer.player.currentTime(currentTime - this.seekStep);
+      },
+      controlRight() {
+        let currentTime = this.$refs.videoPlayer.player.currentTime();
+        this.$refs.videoPlayer.player.currentTime(currentTime + this.seekStep);
+      },
       spaceAction() {
-        console.log('spaceAction');
+        if (this.$refs.videoPlayer.player.paused()) {
+            this.$refs.videoPlayer.player.play();
+        } else {
+            this.$refs.videoPlayer.player.pause();
+        }
       },
       isTestUrl() {
         return this.isTest ? url : this.videoModel.title;
