@@ -1,5 +1,5 @@
 <template>
-    <div class="video-player-container">
+    <div class="video-player-container" >
       <div class="video-title-container">{{isTestTitle(this.videoModel.title)}}</div>
       <div class="player-container">
         <video-player class="vjs-custom-skin"
@@ -7,7 +7,7 @@
                 :playsinline="true"
                 :options="playerOptions"
                 @play="onPlayerPlay($event)"
-                @pause="onPlayerPause($event)" @keyup.enter="spaceAction">
+                @pause="onPlayerPause($event)">
         </video-player>
       </div>
       <div class="comment-container" v-loading.lock="loading"
@@ -122,21 +122,21 @@ export default {
         this.playerOptions.sources[0].src = this.isTest ? mp4 : this.videoModel.playPath;
         this.playerOptions.poster = this.isTest ? bg : this.videoModel.icon;
       });
-      let component = this;
+      let than = this;
       document.onkeydown = function(e) {
             if (e.keyCode === 32) {
-              component.spaceAction();
+              than.spaceAction();
               e.preventDefault();
             } else if (e.keyCode === 37) {
-              component.controlLeft();
+              than.controlLeft();
             } else if (e.keyCode === 38) {
-              component.controlUp();
+              than.controlUp();
               e.preventDefault();
             } else if (e.keyCode === 39) {
-              component.controlRight();
+              than.controlRight();
               e.preventDefault();
             } else if (e.keyCode === 40) {
-              component.controlDown();
+              than.controlDown();
               e.preventDefault();
             }
       };
