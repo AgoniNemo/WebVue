@@ -4,7 +4,8 @@ import { requestLogin,
         requestCommentListVideo,
         requestCommentVideo,
         requestCollectionListVideo,
-        requestColStateVideo} from '@/api';
+        requestColStateVideo,
+        requestModifyUserInfo} from '@/api';
 import { saveToLocal, loadFromLocal } from '@/common/js/store.js';
 
 /**
@@ -180,6 +181,31 @@ export const collectionVideoAction = ({commit}, params) => {
         params.user = model.user;
         params.token = model.token;
         requestColStateVideo(params).then((res) => {
+            commit(types.SET_USER, model);
+            commit(types.SET_ISTEST, (model.authority !== '1005'));
+            resolve(res);
+        }).catch(e => {
+            console.log(e);
+            resolve(e);
+        });
+    });
+};
+
+/**
+ * 修改用户信息
+ *
+ * @class      modifyUserInfoAction (name)
+ * @param      {Object}    arg1         The argument 1
+ * @param      {Function}  arg1.commit  The commit
+ * @param      {<type>}    params  The account data
+ * @return     {Promise}   { description_of_the_return_value }
+ */
+export const modifyUserInfoAction = ({commit}, params) => {
+    return new Promise((resolve, reject) => {
+        const model = loadFromLocal(null, 'logining', false);
+        params.user = model.user;
+        params.token = model.token;
+        requestModifyUserInfo(params).then((res) => {
             commit(types.SET_USER, model);
             commit(types.SET_ISTEST, (model.authority !== '1005'));
             resolve(res);
