@@ -174,3 +174,16 @@ export const requestSearchVideo = data => {
         })
         .then(res => res.data);
 };
+
+/**
+ * 图片上传
+ * @param data
+ * @returns {PromiseLike<T> | Promise<T> | *}
+ */
+export const requestUploadImagePublic = data => {
+    return request({
+      url: `/file/updateImage`,
+      method: 'post',
+      data: data
+    }).then(res => res.data);
+};

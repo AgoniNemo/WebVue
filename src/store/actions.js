@@ -5,7 +5,8 @@ import { requestLogin,
         requestCommentVideo,
         requestCollectionListVideo,
         requestColStateVideo,
-        requestModifyUserInfo} from '@/api';
+        requestModifyUserInfo,
+        requestUploadImagePublic} from '@/api';
 import { saveToLocal, loadFromLocal } from '@/common/js/store.js';
 
 /**
@@ -208,6 +209,34 @@ export const modifyUserInfoAction = ({commit}, params) => {
         requestModifyUserInfo(params).then((res) => {
             commit(types.SET_USER, model);
             commit(types.SET_ISTEST, (model.authority !== '1005'));
+            resolve(res);
+        }).catch(e => {
+            console.log(e);
+            resolve(e);
+        });
+    });
+};
+
+/**
+ * 上传用户头像
+ *
+ * @class      updateUserHeaderAction (name)
+ * @param      {Object}    arg1         The argument 1
+ * @param      {Function}  arg1.commit  The commit
+ * @param      {<type>}    formData  The account data
+ * @return     {Promise}   { description_of_the_return_value }
+ */
+export const updateUserHeaderAction = ({commit}, formData) => {
+    return new Promise((resolve, reject) => {
+        const model = loadFromLocal(null, 'logining', false);
+        formData.append('user', model.user);
+        formData.append('token', model.token);
+        formData.append('name', model.name + Date.parse(new Date()));
+        requestUploadImagePublic(formData).then((res) => {
+            commit(types.SET_ISTEST, (model.authority !== '1005'));
+            model.headPath = res.data.url;
+            commit(types.SET_USER, model);
+            saveToLocal(null, 'logining', model);
             resolve(res);
         }).catch(e => {
             console.log(e);

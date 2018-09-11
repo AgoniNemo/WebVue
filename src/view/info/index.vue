@@ -1,12 +1,27 @@
 <template>
     <el-card class="card-box" style="margin-top:10px;">
-        <div class="info-container">
+        <div class="info-container" v-loading="loading" element-loading-text="拼命加载中...">
             <div class="info-header">
                 <img  class="info-icon" :src=imageUrl>
             </div>
             <div class="info-content clearfix">
                 <div class="header-image">
-                    <img class="image-icon" :src="iconUrl">
+                    <div class="image-icon">
+                        <img  :src="iconUrl">
+                        <el-upload
+                            class="avatar-uploader"
+                            action=""
+                            :show-file-list="false"
+                            :auto-upload="false"
+                            :on-change="updateImageAction">
+                            <div class="float-image-view">
+                            <div style="position: relative;top:30px;">
+                                <img :src="cameraUrl" style="width:30px;height:30px;color:red;">
+                            </div>
+                            <div style="position: relative;top:40px;">修改我的头像</div>
+                        </div>
+                        </el-upload>
+                    </div>
                 </div>
                 <div class="user-info">
                     <h1 class="user-info-name">{{userModel.name}}</h1>
@@ -16,22 +31,22 @@
                 </div>
                 <div class="user-info-content">
                     <el-form label-position="left" :label-width="labelWidth" :model="userModel">
-                        <el-form-item label="性别:" style="height:40px;">
+                        <el-form-item label="性别:" style="height:60px; border-bottom: 1px solid #ebebeb;">
                             <a @click="tapAction(0)">
                                 <span>{{userModel.sex | filterSex}}</span>
                             </a>
                         </el-form-item>
-                        <el-form-item label="年龄:" style="height:40px;">
+                        <el-form-item label="年龄:" style="height:60px; border-bottom: 1px solid #ebebeb;">
                             <a @click="tapAction(1)">
                                 <span>{{userModel.age | filterAge}}</span>
                             </a>
                         </el-form-item>
-                        <el-form-item label="手机号:" style="height:40px;">
+                        <el-form-item label="手机号:" style="height:60px; border-bottom: 1px solid #ebebeb;">
                             <a @click="tapAction(2)">
                                 <span>{{userModel.phoneNumber | filterPhoneNumber}}</span>
                             </a>
                         </el-form-item>
-                        <el-form-item label="权限:">
+                        <el-form-item label="权限:" style="height:60px; border-bottom: 1px solid #ebebeb;">
                             <span>{{userModel.authority | filterAuthor}}</span>
                         </el-form-item>
                     </el-form>
@@ -65,6 +80,7 @@
 import { regExpValidation } from '@/utils/NumberUtils.js';
 import url from '@/assets/image/nav.jpg';
 import icon from '@/assets/image/header.jpg';
+import camera from '@/assets/image/camera.png';
 import { loadFromLocal } from '@/common/js/store.js';
 import { mapActions } from 'vuex';
 
@@ -83,6 +99,7 @@ export default {
             labelWidth: '80px',
             centerDialogVisible: false,
             showType: null,
+            loading: false,
             params: {
                 name: null,
                 age: null,
@@ -121,6 +138,9 @@ export default {
         iconUrl() {
             let headPath = this.userModel.headPath ? this.userModel.headPath : icon;
             return headPath;
+        },
+        cameraUrl() {
+            return camera;
         }
     },
     created() {
@@ -133,7 +153,8 @@ export default {
     },
     methods: {
         ...mapActions([
-            'modifyUserInfoAction'
+            'modifyUserInfoAction',
+            'updateUserHeaderAction'
         ]),
         tapAction(type) {
             this.showType = type;
@@ -142,6 +163,23 @@ export default {
         onSubmit() {
             this.centerDialogVisible = false;
             this.modifyInfo();
+        },
+        updateImageAction(file) {
+            this.loading = true;
+            let imgdata = new FormData();
+            imgdata.append('file', file);
+            this.updateUserHeaderAction(imgdata).then(res => {
+                if (res.code === ERR_OK.toString(10)) {
+                    this.userModel.headPath = res.data.url;
+                } else {
+                    if (res.code === '1003') {
+                        this.$router.push({ path: '/login' });
+                        return;
+                    }
+                    this.warnAlert('图片上传失败');
+                }
+                this.loading = false;
+            });
         },
         modifyInfo() {
             if (this.judgeData()) {
@@ -207,14 +245,32 @@ export default {
         margin: 10px 20px;
         height: 100%
         .header-image
+            position: absolute;
             float:left;
+            height: 300px;
             .image-icon
                 height: 150px;
                 width: 150px;
                 border-radius: 8px;
                 position: relative;
-                top: -40px;
+                top: -60px;
                 border: 6px solid #fff;
+                .float-image-view
+                    position: absolute;
+                    display: inline-block;
+                    width: 100%;
+                    height: 100%;
+                    left: 0;
+                    top: 0;
+                    cursor: default;
+                    opacity: 0;
+                    background-color: rgba(0, 0, 0, .5);
+                    transition: opacity .3s;
+                    cursor: pointer;
+                    color: #ffffff;
+                    text-align: center;
+                .float-image-view:hover
+                    opacity: 1;
         .user-info
             margin-left: 170px;
             .user-info-name
