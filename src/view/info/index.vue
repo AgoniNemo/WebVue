@@ -7,7 +7,7 @@
             <div class="info-content clearfix">
                 <div class="header-image">
                     <div class="image-icon">
-                        <img  :src="iconUrl">
+                        <img  :src="headPath">
                         <el-upload
                             class="avatar-uploader"
                             action=""
@@ -98,6 +98,7 @@ export default {
             userModel: loadFromLocal(null, 'logining', false),
             labelWidth: '80px',
             centerDialogVisible: false,
+            headPath: null,
             showType: null,
             loading: false,
             params: {
@@ -135,10 +136,6 @@ export default {
         imageUrl() {
             return url;
         },
-        iconUrl() {
-            let headPath = this.userModel.headPath ? this.userModel.headPath : icon;
-            return headPath;
-        },
         cameraUrl() {
             return camera;
         }
@@ -150,6 +147,7 @@ export default {
             age: this.userModel.age,
             phoneNumber: this.userModel.phoneNumber
         };
+        this.headPath = this.userModel.headPath ? this.userModel.headPath : icon;
     },
     methods: {
         ...mapActions([
@@ -165,12 +163,16 @@ export default {
             this.modifyInfo();
         },
         updateImageAction(file) {
+            if (file.name.indexOf('png') === -1) {
+                this.warnAlert('图片格式必须为png');
+                return;
+            }
             this.loading = true;
             let imgdata = new FormData();
-            imgdata.append('file', file);
+            imgdata.append('file', file.raw);
             this.updateUserHeaderAction(imgdata).then(res => {
                 if (res.code === ERR_OK.toString(10)) {
-                    this.userModel.headPath = res.data.url;
+                    this.headPath = res.data.url;
                 } else {
                     if (res.code === '1003') {
                         this.$router.push({ path: '/login' });
