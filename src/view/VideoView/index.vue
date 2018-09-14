@@ -15,7 +15,7 @@
           <div class="itme" v-for=" video in videos" :key="video.id">
             <a @click.stop="imaegClick(video)">
                  <el-card :body-style="{ padding: '5px' }" shadow="hover">
-                  <img :src="isTestUrl(video.icon)" class="image">
+                  <img :src="isTestUrl(video.icon)" class="image" :onError="defaultImg">
                   <div style="padding: 10px 0px; text-align: start;">
                     <el-tooltip :content="isTestTitle(video.title)" placement="top" effect="light">
                       <div class="title">{{isTestTitle(video.title)}}</div>
@@ -44,6 +44,7 @@
   export default {
     data() {
       return {
+        defaultImg: 'this.src="' + url + '"',
         headerVideos: [],
         videos: [],
         loading: false,

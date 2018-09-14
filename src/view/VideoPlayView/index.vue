@@ -21,7 +21,7 @@
         <div class="comment-list-container">
           <div class="comment-input-container">
             <div class="comment-image-container">
-              <img class="comment-image-icon" :src="iconUrl">
+              <img class="comment-image-icon" :src="iconUrl" :onError="defaultImg">
             </div>
             <el-input
                 class="comment-input"
@@ -79,6 +79,7 @@ export default {
         loading: false,
         collectionIcon: 'el-icon-star-off',
         commitKey: '',
+        defaultImg: 'this.src="' + url + '"',
         commitList: []
       };
     },

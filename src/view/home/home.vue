@@ -5,7 +5,7 @@
         <router-link :to="{path: '/home'}"><img :src="webUrl" style="width:48px;height:48px;margin-left: 10px;"></router-link>
         <dropdown trigger="hover" ref="dropdownView">
           <div class="image">
-            <img  class="icon" :src=imageUrl>
+            <img  class="icon" :src="headPath" :onError="imgError()">
           </div>
           <div slot="content">
             <menus>
@@ -42,6 +42,7 @@
     data() {
       return {
         test: false,
+        headPath: null,
         menus: []
       };
     },
@@ -49,13 +50,12 @@
         ...mapGetters([
             'userModel'
         ]),
-        imageUrl() {
-            let headPath = this.userModel.headPath ? this.userModel.headPath : url;
-            return headPath;
-        },
         webUrl() {
           return webIcon;
         }
+    },
+    created() {
+      this.headPath = this.userModel.headPath ? this.userModel.headPath : url;
     },
     methods: {
       informationManger() {
@@ -78,6 +78,9 @@
         dropdown.isShow = false;
         clearLocal();
         this.$router.push({ path: '/' });
+      },
+      imgError() {
+        this.headPath = url;
       },
       showAlert(text) {
         this.$modal.open({

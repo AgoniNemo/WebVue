@@ -16,7 +16,7 @@
                             :on-change="updateImageAction">
                             <div class="float-image-view">
                             <div style="position: relative;top:30px;">
-                                <img :src="cameraUrl" style="width:30px;height:30px;color:red;">
+                                <img :src="cameraUrl" style="width:30px;height:30px;color:red;" :onError="imgError()">
                             </div>
                             <div style="position: relative;top:40px;">修改我的头像</div>
                         </div>
@@ -163,13 +163,13 @@ export default {
             this.modifyInfo();
         },
         updateImageAction(file) {
-            if (file.name.indexOf('png') === -1) {
-                this.warnAlert('图片格式必须为png');
-                return;
-            }
+            // if (file.name.indexOf('png') === -1) {
+            //     this.warnAlert('图片格式必须为png');
+            //     return;
+            // }
             this.loading = true;
             let imgdata = new FormData();
-            imgdata.append('file', file.raw);
+            imgdata.append('file', file);
             this.updateUserHeaderAction(imgdata).then(res => {
                 if (res.code === ERR_OK.toString(10)) {
                     this.headPath = res.data.url;
@@ -201,6 +201,9 @@ export default {
                     this.warnAlert(res.message);
                 }
             });
+        },
+        imgError() {
+            this.headPath = icon;
         },
         judgeData() {
             if (!regExpValidation(this.params.age)) {
@@ -254,6 +257,7 @@ export default {
                 height: 150px;
                 width: 150px;
                 border-radius: 8px;
+                background: #ffffff;
                 position: relative;
                 top: -60px;
                 border: 6px solid #fff;
