@@ -123,24 +123,8 @@ export default {
         this.playerOptions.sources[0].src = this.isTest ? mp4 : this.videoModel.playPath;
         this.playerOptions.poster = this.isTest ? bg : this.videoModel.icon;
       });
-      let than = this;
-      document.onkeydown = function(e) {
-            if (e.keyCode === 32) {
-              than.spaceAction();
-              e.preventDefault();
-            } else if (e.keyCode === 37) {
-              than.controlLeft();
-            } else if (e.keyCode === 38) {
-              than.controlUp();
-              e.preventDefault();
-            } else if (e.keyCode === 39) {
-              than.controlRight();
-              e.preventDefault();
-            } else if (e.keyCode === 40) {
-              than.controlDown();
-              e.preventDefault();
-            }
-      };
+      this.addKeyboardEvents();
+      document.title = this.videoModel.title;
     },
     methods: {
       ...mapActions([
@@ -149,6 +133,26 @@ export default {
         'commentVideoAction',
         'collectionVideoAction'
       ]),
+      addKeyboardEvents() {
+        let than = this;
+        document.onkeydown = function(e) {
+              if (e.keyCode === 32) {
+                than.spaceAction();
+                e.preventDefault();
+              } else if (e.keyCode === 37) {
+                than.controlLeft();
+              } else if (e.keyCode === 38) {
+                than.controlUp();
+                e.preventDefault();
+              } else if (e.keyCode === 39) {
+                than.controlRight();
+                e.preventDefault();
+              } else if (e.keyCode === 40) {
+                than.controlDown();
+                e.preventDefault();
+              }
+        };
+      },
       onPlayerPlay(player) {
         console.log('onPlayerPlay');
       },
@@ -156,14 +160,12 @@ export default {
          console.log('onPlayerPause');
       },
       controlUp() {
-        let currentVolume = this.$refs.videoPlayer.player.currentTime();
+        let currentVolume = this.$refs.videoPlayer.player.volume();
         this.$refs.videoPlayer.player.volume(currentVolume + this.volumeStep);
-        console.log('controlUp', this.$refs.videoPlayer.player.currentTime());
       },
       controlDown() {
-        let currentVolume = this.$refs.videoPlayer.player.currentTime();
+        let currentVolume = this.$refs.videoPlayer.player.volume();
         this.$refs.videoPlayer.player.volume(currentVolume - this.volumeStep);
-        console.log('controlDown', this.$refs.videoPlayer.player.currentTime());
       },
       controlLeft() {
         let currentTime = this.$refs.videoPlayer.player.currentTime();

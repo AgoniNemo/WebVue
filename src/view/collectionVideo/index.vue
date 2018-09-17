@@ -6,7 +6,7 @@
           <div class="itme" v-for=" video in dataList" :key="video.id">
             <a @click.stop="imaegClick(video)">
                  <el-card :body-style="{ padding: '5px' }" shadow="hover">
-                  <img :src="isTestUrl(video.icon)" class="image">
+                  <img :src="isTestUrl(video.icon)" class="image" :onError="defaultImg">
                   <div style="padding: 10px 0px; text-align: start;">
                     <el-tooltip :content="isTestTitle(video.title)" placement="top" effect="light">
                       <div class="title">{{isTestTitle(video.title)}}</div>
@@ -31,6 +31,7 @@ const ERR_OK = 0;
 export default {
   data() {
     return {
+       defaultImg: 'this.src="' + url + '"',
        loading: false,
        dataList: []
     };
@@ -94,6 +95,8 @@ export default {
     height: 100%
     .collection-title
       text-align: start
+      font-size: 20px;
+      font-weight: bold;
       border-bottom: 1px solid lightgray
       padding-bottom: 10px
     .itme-content

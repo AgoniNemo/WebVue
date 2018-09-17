@@ -3,7 +3,7 @@
     <div class="video-header">
       <el-carousel :interval="4000" type="card" height="400px">
           <el-carousel-item v-for="video in headerVideos" :key="video.id">
-            <a @click.stop="imaegClick(video)">
+            <a @click.stop="imaegClick(video)" :onError="defaultImg">
               <img :src="isTestUrl(video.icon)" trigger="click">
             </a>
           </el-carousel-item>

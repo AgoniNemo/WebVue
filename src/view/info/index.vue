@@ -24,7 +24,7 @@
                     </div>
                 </div>
                 <div class="user-info">
-                    <h1 class="user-info-name">{{userModel.name}}</h1>
+                    <h1 class="user-info-name" @click="tapAction(3)">{{userModel.name}}</h1>
                     <router-link :to="{path: '/home'}">
                         <a style="float:right;height:30px;line-height:30px;">返回首页></a>
                     </router-link>
@@ -67,6 +67,9 @@
             </div>
             <div v-show="(showType === 2)">
                 <el-input v-model="params.phoneNumber" placeholder="请输入手机号"></el-input>
+            </div>
+            <div v-show="(showType === 3)">
+                <el-input v-model="params.name" placeholder="请输入用户昵称"></el-input>
             </div>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="centerDialogVisible = false">取 消</el-button>
@@ -160,16 +163,37 @@ export default {
         },
         onSubmit() {
             this.centerDialogVisible = false;
+            if (this.showType === 0) {
+                if (this.params.sex === null || this.params.sex === '') {
+                    this.warnAlert('修改性别不能为空！');
+                    return;
+                }
+            } else if (this.showType === 1) {
+                if (this.params.age === null || this.params.age === '') {
+                    this.warnAlert('修改年龄不能为空！');
+                    return;
+                }
+            } else if (this.showType === 2) {
+                if (this.params.phoneNumber === null || this.params.phoneNumber === '') {
+                    this.warnAlert('修改手机号不能为空！');
+                    return;
+                }
+            } else if (this.showType === 3) {
+                if (this.params.name === null || this.params.name === '') {
+                    this.warnAlert('修改昵称不能为空！');
+                    return;
+                }
+            }
             this.modifyInfo();
         },
         updateImageAction(file) {
-            // if (file.name.indexOf('png') === -1) {
-            //     this.warnAlert('图片格式必须为png');
-            //     return;
-            // }
+            if (file.name.indexOf('png') === -1) {
+                this.warnAlert('图片格式必须为png');
+                return;
+            }
             this.loading = true;
             let imgdata = new FormData();
-            imgdata.append('file', file);
+            imgdata.append('file', file.raw);
             this.updateUserHeaderAction(imgdata).then(res => {
                 if (res.code === ERR_OK.toString(10)) {
                     this.headPath = res.data.url;
@@ -285,6 +309,9 @@ export default {
                 height: 30px
                 line-height: 30px
                 display: inline-block;
+            .user-info-name:hover
+                cursor: pointer;
+                color: #3c81df;
         .user-info-content
             margin-top: 10px;
             margin-left: 170px;
