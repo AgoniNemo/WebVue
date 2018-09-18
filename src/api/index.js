@@ -176,6 +176,25 @@ export const requestSearchVideo = data => {
 };
 
 /**
+ * 查询影片
+ * user：用户名
+ * token：用户注册与登录时有返回
+ * id：影片id
+ * @param      {<type>}  data    The data
+ * @return     {<type>}  { description_of_the_return_value }
+ */
+export const requestQueryVideo = data => {
+    return request({
+            url: `/video/queryVideo`,
+            method: 'post',
+            data: qs.stringify({
+                ...data
+            })
+        })
+        .then(res => res.data);
+};
+
+/**
  * 图片上传
  * @param data
  * @returns {PromiseLike<T> | Promise<T> | *}

@@ -73,6 +73,7 @@
       this.params.page = this.params.page + 1;
       this.params.count = 30;
       this.requestData();
+      document.title = 'Porn';
     },
     computed: {
         ...mapGetters([
@@ -144,7 +145,7 @@
       },
       imaegClick(video) {
         this.commitVideoModelAction(video).then((res) => {
-          this.$router.push({ path: '/home/videoPlayView' });
+          this.$router.push({path: '/home/videoPlayView', query: { videoId: video.videoId }});
         });
       },
       showAlert(text) {

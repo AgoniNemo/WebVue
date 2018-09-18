@@ -6,7 +6,8 @@ import { requestLogin,
         requestCollectionListVideo,
         requestColStateVideo,
         requestModifyUserInfo,
-        requestUploadImagePublic} from '@/api';
+        requestUploadImagePublic,
+        requestQueryVideo} from '@/api';
 import { saveToLocal, loadFromLocal } from '@/common/js/store.js';
 
 /**
@@ -182,6 +183,30 @@ export const collectionVideoAction = ({commit}, params) => {
         params.user = model.user;
         params.token = model.token;
         requestColStateVideo(params).then((res) => {
+            commit(types.SET_USER, model);
+            commit(types.SET_ISTEST, (model.authority !== '1005'));
+            resolve(res);
+        }).catch(e => {
+            console.log(e);
+            resolve(e);
+        });
+    });
+};
+
+/**
+ * 查询影片
+ *
+ * @class      queryVideoAction (name)
+ * @param      {Object}    id         影片id
+ * @param      {<type>}    params  The account data
+ * @return     {Promise}   { description_of_the_return_value }
+ */
+export const queryVideoAction = ({commit}, params) => {
+    return new Promise((resolve, reject) => {
+        const model = loadFromLocal(null, 'logining', false);
+        params.user = model.user;
+        params.token = model.token;
+        requestQueryVideo(params).then((res) => {
             commit(types.SET_USER, model);
             commit(types.SET_ISTEST, (model.authority !== '1005'));
             resolve(res);

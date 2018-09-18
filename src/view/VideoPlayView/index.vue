@@ -1,6 +1,7 @@
 <template>
-    <div class="video-player-container" >
-      <div class="video-title-container">{{isTestTitle(this.videoModel.title)}}</div>
+    <div class="video-player-container" v-loading.fullscreen.lock="loading"
+          element-loading-text="努力加载中">
+      <div class="video-title-container">{{isTestTitle(this.videoObj.title)}}</div>
       <div class="player-container">
         <video-player class="vjs-custom-skin"
                 ref="videoPlayer"
@@ -10,8 +11,7 @@
                 @pause="onPlayerPause($event)">
         </video-player>
       </div>
-      <div class="comment-container" v-loading.lock="loading"
-          element-loading-text="努力加载中">
+      <div class="comment-container">
         <div class="comment-count-container">
           <div style="display: inline-block;">{{commentCount}}</div>
           <div style="display: inline-block;" @click="collectionAction">
@@ -74,6 +74,7 @@ export default {
           }],
           poster: bg
         },
+        videoObj: {},
         seekStep: 10, /// 后退与进行时间
         volumeStep: 0.05, /// 加减音量
         loading: false,
@@ -84,9 +85,12 @@ export default {
       };
     },
     mounted() {
-      console.log('this is current player instance object');
-      this.refreshVideoModelAction();
+      this.fetchVideoData();
       this.requestCommitList();
+      this.$nextTick(function () {
+        this.playerOptions.sources[0].src = this.isTest ? mp4 : this.videoObj.playPath;
+        this.playerOptions.poster = this.isTest ? bg : this.videoObj.icon;
+      });
     },
     filters: {
       formatDate(t) {
@@ -119,19 +123,20 @@ export default {
       }
     },
     created() {
-      this.$nextTick(function () {
-        this.playerOptions.sources[0].src = this.isTest ? mp4 : this.videoModel.playPath;
-        this.playerOptions.poster = this.isTest ? bg : this.videoModel.icon;
-      });
       this.addKeyboardEvents();
-      document.title = this.videoModel.title;
+      this.refreshVideoModelAction();
+      this.videoObj = {
+        ...this.videoModel
+      };
+      document.title = this.videoObj.title;
     },
     methods: {
       ...mapActions([
         'refreshVideoModelAction',
         'enquiriesCommentListVideo',
         'commentVideoAction',
-        'collectionVideoAction'
+        'collectionVideoAction',
+        'queryVideoAction'
       ]),
       addKeyboardEvents() {
         let than = this;
@@ -202,7 +207,7 @@ export default {
       collectionVideo() {
        let b = (this.collectionIcon === 'el-icon-star-off');
        const parm = {
-          id: this.videoModel.videoId,
+          id: this.videoObj.videoId,
           collection: b ? '1' : '0'
         };
         this.collectionVideoAction(parm).then(res => {
@@ -220,7 +225,7 @@ export default {
       },
       commentClick() {
         const condition = {
-          id: this.videoModel.videoId,
+          id: this.videoObj.videoId,
           content: this.commitKey
         };
         this.commentVideoAction(condition).then((res) => {
@@ -241,11 +246,9 @@ export default {
       },
       requestCommitList() {
         const condition = {
-          id: this.videoModel.videoId
+          id: this.$route.query.videoId
         };
-        this.loading = true;
         this.enquiriesCommentListVideo(condition).then((res) => {
-            this.loading = false;
             if (res.code === ERR_OK.toString(10)) {
               this.commitList = res.data.reverse();
             } else {
@@ -255,6 +258,26 @@ export default {
               }
               this.warnAlert(res.message);
             }
+        });
+      },
+      fetchVideoData() {
+        let parm = {
+          id: this.$route.query.videoId
+        };
+        this.loading = true;
+        this.queryVideoAction(parm).then(res => {
+          this.loading = false;
+            if (res.code === ERR_OK.toString(10)) {
+              this.videoObj = res.data;
+              this.playerOptions.sources[0].src = this.isTest ? mp4 : this.videoObj.playPath;
+              this.playerOptions.poster = this.isTest ? bg : this.videoObj.icon;
+            } else {
+              if (res.code === '1003') {
+                this.$router.push({ path: '/login' });
+                return;
+              }
+              this.warnAlert(res.message);
+          }
         });
       },
       showAlert(text) {
