@@ -128,7 +128,9 @@ export default {
       this.videoObj = {
         ...this.videoModel
       };
-      document.title = this.videoObj.title;
+      if (!this.isTest && this.videoObj.title) {
+          document.title = this.videoObj.title;
+      }
     },
     methods: {
       ...mapActions([
