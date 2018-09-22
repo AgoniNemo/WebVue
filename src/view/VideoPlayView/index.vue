@@ -3,13 +3,20 @@
           element-loading-text="努力加载中">
       <div class="video-title-container">{{isTestTitle(this.videoObj.title)}}</div>
       <div class="player-container">
-        <video-player class="vjs-custom-skin"
+        <div class="player-view">
+           <video-player class="vjs-custom-skin"
                 ref="videoPlayer"
                 :playsinline="true"
                 :options="playerOptions"
                 @play="onPlayerPlay($event)"
                 @pause="onPlayerPause($event)">
-        </video-player>
+          </video-player>
+        </div>
+        <transition name="slide-fade">
+          <div class="player-promptHint" v-show="showPrompt">
+              <span class="promptHint-text">{{promptText}}</span>
+          </div>
+        </transition>
       </div>
       <div class="comment-container">
         <div class="comment-count-container">
@@ -75,6 +82,8 @@ export default {
           poster: bg
         },
         videoObj: {},
+        promptText: '声音:0%',
+        showPrompt: false,
         seekStep: 10, /// 后退与进行时间
         volumeStep: 0.05, /// 加减音量
         loading: false,
@@ -168,19 +177,58 @@ export default {
       },
       controlUp() {
         let currentVolume = this.$refs.videoPlayer.player.volume();
-        this.$refs.videoPlayer.player.volume(currentVolume + this.volumeStep);
+        let newVolume = ((currentVolume + this.volumeStep) > 1) ? 1 : (currentVolume + this.volumeStep);
+        this.$refs.videoPlayer.player.volume(newVolume);
+        this.showPrompt = true;
+        this.promptText = '声音:' + Math.floor(Number(newVolume) * 100) + '%';
+        setTimeout(() => {
+          this.showPrompt = false;
+        }, 600);
       },
       controlDown() {
         let currentVolume = this.$refs.videoPlayer.player.volume();
-        this.$refs.videoPlayer.player.volume(currentVolume - this.volumeStep);
+        let newVolume = (currentVolume - this.volumeStep) > 0 ? (currentVolume - this.volumeStep) : 0;
+        this.$refs.videoPlayer.player.volume(newVolume);
+        this.showPrompt = true;
+        this.promptText = '声音:' + Math.floor(Number(newVolume) * 100) + '%';
+        setTimeout(() => {
+          this.showPrompt = false;
+        }, 600);
       },
       controlLeft() {
         let currentTime = this.$refs.videoPlayer.player.currentTime();
-        this.$refs.videoPlayer.player.currentTime(currentTime - this.seekStep);
+        let newTime = (currentTime - this.seekStep) < 0 ? 0 : (currentTime - this.seekStep);
+        this.$refs.videoPlayer.player.currentTime(newTime);
+        newTime = newTime * 1000;
+        // this.promptText = `进度:${this.timeHandle(newTime)}/${this.videoObj.duration}`;
+        // setTimeout(() => {
+        //   this.showPrompt = false;
+        // }, 600);
       },
       controlRight() {
+        let totalTime = 0;
+        if (this.videoObj.duration) {
+          let time = '1970/01/01';
+          let arr = this.videoObj.duration.split(':');
+          time += ((arr.length > 2) ? ' ' : ' 00:');
+          time += this.videoObj.duration;
+          let date = new Date(time);
+          totalTime = date.getTime() / 1000 - (-28800);
+        }
         let currentTime = this.$refs.videoPlayer.player.currentTime();
-        this.$refs.videoPlayer.player.currentTime(currentTime + this.seekStep);
+        let newTime = (currentTime + this.seekStep) < totalTime ? (currentTime + this.seekStep) : (totalTime === 0 ? (currentTime + this.seekStep) : totalTime);
+        this.$refs.videoPlayer.player.currentTime(newTime);
+        newTime = newTime * 1000;
+        // this.promptText = `进度:${this.timeHandle(newTime)}/${this.videoObj.duration}`;
+        // setTimeout(() => {
+        //   this.showPrompt = false;
+        // }, 600);
+      },
+      timeHandle(time) {
+        let hours = parseInt((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        let minutes = parseInt((time % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = parseInt((time % (1000 * 60)) / 1000);
+        return `${hours ? (hours + ':') : ''}${minutes}:${seconds}`;
       },
       spaceAction() {
         if (this.$refs.videoPlayer.player.paused()) {
@@ -301,12 +349,38 @@ export default {
     }
    };
 </script>
-<style lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus" rel="stylesheet/stylus" scoped>
 .video-player-container
     margin-top: 20px;
     border-radius: 2px;
-    .vjs-custom-skin
-      border-radius: 5px;
+    .player-view
+      .vjs-custom-skin
+        border-radius: 5px;
+    .slide-fade-enter-active
+        transition: all .3s ease
+      .slide-fade-leave-active
+        transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+      .slide-fade-enter, .slide-fade-leave-to
+        opacity: 0;
+      .player-promptHint
+       position: absolute;
+       color: red;
+       background: hsla(0,0%,100%,.8)
+       top: 50%;
+       left: 50%;
+       padding: 9px;
+       font-size: 20px;
+       margin-left: -50px;
+       margin-top: -100px;
+       border-radius: 4px;
+       background: hsla(0,0%,100%,.8);
+       color: #000;
+       text-align: center;
+       .promptHint-text
+          vertical-align: top;
+          display: inline-block;
+          overflow: visible;
+          text-align: center;
     .video-title-container
       font-size: 25px;
       margin-bottom: 10px;
