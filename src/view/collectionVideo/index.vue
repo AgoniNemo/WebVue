@@ -54,7 +54,7 @@ export default {
       },
       imaegClick(video) {
         this.commitVideoModelAction(video).then((res) => {
-          this.$router.push({ path: '/home/videoPlayView' ,query: { videoId: video.videoId }});
+          this.$router.push({path: '/home/videoPlayView', query: { videoId: video.videoId }});
         });
       },
       showAlert(text) {
