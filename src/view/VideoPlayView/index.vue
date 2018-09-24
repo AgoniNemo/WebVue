@@ -364,8 +364,6 @@ export default {
         opacity: 0;
       .player-promptHint
        position: absolute;
-       color: red;
-       background: hsla(0,0%,100%,.8)
        top: 50%;
        left: 50%;
        padding: 9px;
