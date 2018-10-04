@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/': {
-        target: 'https://xxxserver.herokuapp.com',
+        target: 'http://0.0.0.0:8097',
         changeOrigin: true,
         }
     },

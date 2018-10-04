@@ -31,7 +31,7 @@
       </div>
     </div>
     <div class="foot">
-      <pagination :total="969" :change=pageClick layout="total, pager, jumper" :page-size="30"></pagination>
+      <pagination :total="total" :change=pageClick layout="total, pager, jumper" :page-size="30"></pagination>
     </div>
   </div>
 </template>
@@ -49,6 +49,7 @@
         videos: [],
         loading: false,
         span: 4,
+        total: 1,
         params: {
           count: 10,
           page: 0
@@ -61,7 +62,7 @@
       };
       this.enquiriesVideoListAction(condition).then((res) => {
           if (res.code === ERR_OK.toString(10)) {
-            this.headerVideos = res.data;
+            this.headerVideos = res.data.list;
           } else {
             if (res.code === '1003') {
               this.$router.push({ path: '/login' });
@@ -97,7 +98,8 @@
         this.loading = true;
         this.enquiriesVideoListAction(condition).then((res) => {
             if (res.code === ERR_OK.toString(10)) {
-              this.videos = res.data;
+              this.videos = res.data.list;
+              this.total = res.data.total;
             } else {
               if (res.code === '1003') {
                 this.$router.push({ path: '/login' });
