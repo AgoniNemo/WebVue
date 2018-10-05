@@ -1,6 +1,11 @@
 <template>
     <div class="animation-view">
-        <img class="first-img" src="../../assets/home/back.png">
+        <transition name="fade-thumb">
+          <img class="first-img-thumb" src="../../assets/home/backThumbnails.png" v-show="(show == false)">
+        </transition>
+        <transition name="fade">
+          <img class="first-img" src="../../assets/home/back.png" v-show="show" @load="imageOnload">
+        </transition>
     </div>
 </template>
 
@@ -12,7 +17,7 @@
       };
     },
     methods: {
-      showInterface() {
+      imageOnload() {
         this.show = true;
       }
     }
@@ -23,18 +28,16 @@
   .animation-view
     width: 100%;
     height: 100%;
-    .first-img
+    .fade-thumb-enter-active, .fade-thumb-leave-active
+      transition: opacity 1s;
+    .fade-thumb-enter, .fade-thumb-leave-to
+      opacity: 0;
+    .fade-enter-active, .fade-leave-active
+      transition: opacity 1s;
+    .fade-enter, .fade-leave-to
+      opacity: 0;
+    .first-img , .first-img-thumb
       position: fixed;
       width: 100%;
       height: 100%;
-      animation: firstslidein 4s linear;
-      animation-direction: alternate;
-      @keyframes firstslidein
-        0% {
-          opacity: 0.5;
-        }
-        100% {
-          opacity: 1;
-        }
-
 </style>
