@@ -82,7 +82,7 @@ export default {
           poster: bg
         },
         videoObj: {},
-        promptText: '声音:0%',
+        promptText: '声音:100%',
         showPrompt: false,
         seekStep: 10, /// 后退与进行时间
         volumeStep: 0.05, /// 加减音量
@@ -354,6 +354,8 @@ export default {
     margin-top: 20px;
     border-radius: 2px;
     .player-view
+      position: relative;
+      z-index: 10;
       .vjs-custom-skin
         border-radius: 5px;
     .slide-fade-enter-active
@@ -364,12 +366,12 @@ export default {
         opacity: 0;
       .player-promptHint
        position: absolute;
-       top: 50%;
+       z-index: 20;
+       top: 40%;
        left: 50%;
        padding: 9px;
        font-size: 20px;
        margin-left: -50px;
-       margin-top: -100px;
        border-radius: 4px;
        background: hsla(0,0%,100%,.8);
        color: #000;
