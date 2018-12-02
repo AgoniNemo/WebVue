@@ -1,7 +1,7 @@
 <template>
   <div class="video-content">
     <div class="video-header">
-      <el-carousel :interval="4000" type="card" height="400px">
+      <el-carousel :interval="4000" type="card" height="400px" trigger="click">
           <el-carousel-item v-for="video in headerVideos" :key="video.id">
             <a @click.stop="imaegClick(video)" :onError="defaultImg">
               <img :src="isTestUrl(video.icon)" trigger="click">
@@ -51,7 +51,7 @@
         span: 4,
         total: 1,
         params: {
-          count: 10,
+          count: 20,
           page: 0
         }
       };
@@ -72,7 +72,6 @@
           }
       });
       this.params.page = this.params.page + 1;
-      this.params.count = 30;
       this.requestData();
       document.title = 'Porn';
     },
@@ -100,6 +99,9 @@
             if (res.code === ERR_OK.toString(10)) {
               this.videos = res.data.list;
               this.total = res.data.total;
+              if (this.total > 1) {
+                 this.total = this.total - 1;
+              }
             } else {
               if (res.code === '1003') {
                 this.$router.push({ path: '/login' });

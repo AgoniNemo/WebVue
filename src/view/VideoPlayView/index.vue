@@ -244,7 +244,8 @@ export default {
         return this.isTest ? '这是一个标题 这是一个标题 这是一个标题 这是一个标题' : title;
       },
       collectionAction() {
-          this.$confirm('确定要收藏该影片,是否继续?', '提示', {
+          let msg = (this.collectionIcon === 'el-icon-star-on') ? '取消收藏' : '收藏';
+          this.$confirm(`确定要${msg}该影片,是否继续?`, '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'info'
@@ -262,7 +263,8 @@ export default {
         };
         this.collectionVideoAction(parm).then(res => {
           if (res.code === ERR_OK.toString(10)) {
-              this.warnAlert('收藏成功!');
+              let msg = b ? '收藏' : '取消收藏';
+              this.warnAlert(`${msg}成功!`);
               this.collectionIcon = b ? 'el-icon-star-on' : 'el-icon-star-off';
             } else {
               if (res.code === '1003') {
@@ -318,7 +320,8 @@ export default {
         this.queryVideoAction(parm).then(res => {
           this.loading = false;
             if (res.code === ERR_OK.toString(10)) {
-              this.videoObj = res.data;
+              this.videoObj = res.data.data;
+              this.collectionIcon = res.data.status ? 'el-icon-star-on' : 'el-icon-star-off';
               this.playerOptions.sources[0].src = this.isTest ? mp4 : this.videoObj.playPath;
               this.playerOptions.poster = this.isTest ? bg : this.videoObj.icon;
             } else {

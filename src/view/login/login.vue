@@ -71,6 +71,8 @@
             }
             this.isDisabled = false;
             this.isLoading();
+          }).catch(e => {
+            this.isDisabled = false;
           });
       },
       isLoading() {
