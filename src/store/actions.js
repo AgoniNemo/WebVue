@@ -256,7 +256,7 @@ export const updateUserHeaderAction = ({commit}, formData) => {
         const model = loadFromLocal(null, 'logining', false);
         formData.append('user', model.user);
         formData.append('token', model.token);
-        formData.append('name', model.name + Date.parse(new Date()));
+        formData.append('name', `${model.name}${parseInt(Date.now() / 1000)}`);
         requestUploadImagePublic(formData).then((res) => {
             commit(types.SET_ISTEST, (model.authority !== '1005'));
             model.headPath = res.data.url;
