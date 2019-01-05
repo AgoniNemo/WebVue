@@ -149,8 +149,16 @@
       },
       imaegClick(video) {
         this.commitVideoModelAction(video).then((res) => {
-          this.$router.push({path: '/home/videoPlayView', query: { videoId: video.videoId }});
+          // this.$router.push({path: '/home/videoPlayView', query: { videoId: video.videoId }});
+          this.skipRouter(video.videoId);
         });
+      },
+      skipRouter(id) {
+        const {href} = this.$router.resolve({
+           path: '/home/videoPlayView',
+           query: { videoId: id }
+        });
+        window.open(href, '_blank');
       },
       showAlert(text) {
         this.$modal.open({
