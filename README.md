@@ -12,6 +12,7 @@
 
 #### 影片播放
 ![video](https://raw.githubusercontent.com/AgoniNemo/WebVue/master/image/video.png)
+![play](https://raw.githubusercontent.com/AgoniNemo/WebVue/master/image/play.png)
 
 #### 个人信息
 ![info](https://raw.githubusercontent.com/AgoniNemo/WebVue/master/image/info.png)
