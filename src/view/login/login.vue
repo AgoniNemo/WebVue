@@ -31,12 +31,12 @@
         password: '',
         btnClass: 'button is-primary',
         isDisabled: false,
-        isChrome: false
+        browser: ''
       };
     },
     created() {
         const userAgent = navigator.userAgent;
-        this.isChrome = userAgent.indexOf('Chrome') > -1;
+        this.browser = this.browserType(userAgent);
     },
     computed: {
       isEmpty() {
@@ -51,8 +51,8 @@
         'loginAction'
       ]),
       loginClick() {
-        if (this.isChrome === false) {
-          this.warnAlert('本网站只支持谷歌浏览器!');
+        if (this.browser === 'ie') {
+          this.warnAlert('本网站不支持IE浏览器!');
           return;
         }
         this.isLoading();
@@ -78,6 +78,19 @@
       isLoading() {
         let r = this.btnClass === 'button is-primary';
         this.btnClass = r ? 'button is-primary is-loading' : 'button is-primary';
+      },
+      browserType(explorer) {
+        if (explorer.indexOf('MSIE') >= 0) {
+            return 'ie';
+        } else if (explorer.indexOf('Firefox') >= 0) {
+            return 'Firefox';
+        } else if (explorer.indexOf('Chrome') >= 0) {
+            return 'Chrome';
+        } else if (explorer.indexOf('Opera') >= 0) {
+            return 'Opera';
+        } else if (explorer.indexOf('Safari') >= 0) {
+            return 'Safari';
+        }
       },
       showAlert(text) {
         this.$modal.open({
