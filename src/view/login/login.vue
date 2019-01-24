@@ -51,8 +51,8 @@
         'loginAction'
       ]),
       loginClick() {
-        if (this.browser === 'ie') {
-          this.warnAlert('本网站不支持IE浏览器!');
+        if (this.browser === 'ie' || this.browser === 'other') {
+          this.warnAlert('本网站不支持IE或非主流浏览器!');
           return;
         }
         this.isLoading();
@@ -90,6 +90,8 @@
             return 'Opera';
         } else if (explorer.indexOf('Safari') >= 0) {
             return 'Safari';
+        } else {
+            return 'other';
         }
       },
       showAlert(text) {
