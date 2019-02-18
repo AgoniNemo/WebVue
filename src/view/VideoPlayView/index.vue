@@ -137,9 +137,6 @@ export default {
       this.videoObj = {
         ...this.videoModel
       };
-      if (!this.isTest && this.videoObj.title) {
-          document.title = this.videoObj.title;
-      }
     },
     methods: {
       ...mapActions([
@@ -252,7 +249,7 @@ export default {
           }).then(() => {
             this.collectionVideo();
           }).catch(() => {
-            console.log('取消');
+            // console.log('取消');
           });
       },
       collectionVideo() {
@@ -324,6 +321,7 @@ export default {
               this.collectionIcon = res.data.status ? 'el-icon-star-on' : 'el-icon-star-off';
               this.playerOptions.sources[0].src = this.isTest ? mp4 : this.videoObj.playPath;
               this.playerOptions.poster = this.isTest ? bg : this.videoObj.icon;
+              document.title = this.isTest ? '测试标题' : this.videoObj.title;
             } else {
               if (res.code === '1003') {
                 this.$router.push({ path: '/login' });

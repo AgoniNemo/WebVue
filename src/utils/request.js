@@ -17,10 +17,10 @@ const service = axios.create({
  */
 service.interceptors.request.use(cfg => {
     cfg.headers['Accept'] = config.map.headers.Accept || null;
-    console.log(cfg);
+    // console.log(cfg);
     return cfg;
 }, error => {
-    console.log(error); // 打印测试
+    // console.log(error); // 打印测试
     Promise.reject(error);
 });
 
@@ -32,7 +32,7 @@ service.interceptors.request.use(cfg => {
 service.interceptors.response.use(
     response => response,
     error => {
-        console.log('error' + error); // 打印测试
+        // console.log('error' + error); // 打印测试
         return Promise.reject(error);
     }
 );
